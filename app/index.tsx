@@ -2,11 +2,26 @@ import { Text, View, TextInput, Button, StyleSheet, StatusBar, TouchableOpacity}
 import { useState } from "react";
 
 export default function Index() {
-    const  [food, setFood] = useState("");
-    const  [finalData, setFinalData] = useState("");
+    const  [foodName, setFoodName] = useState("");
+    const  [foodEnergy, setFoodEnergy] = useState("");
+    const  [foodProtein, setFoodProtein] = useState("");
+    const  [foodCarbs, setFoodCarbs] = useState("");
+    const  [foodFat, setFoodFat] = useState("");
+    const  [finalData, setFinalData] = useState<{ label: string; value: string }[]>([]);
     const handlePress = () => {
-        setFinalData(food);
-        setFood('');
+        setFinalData([
+              { label: "foodName", value: foodName },
+              { label: "foodEnergy", value: foodEnergy },
+              { label: "foodProtein", value: foodProtein },
+              { label: "foodCarbs", value: foodCarbs },
+              { label: "foodFat", value: foodFat },
+            ]);
+
+        setFoodName('');
+        setFoodEnergy('');
+        setFoodProtein('');
+        setFoodCarbs('');
+        setFoodFat('');
         }
   return (
     <View>
@@ -18,20 +33,56 @@ export default function Index() {
         Edit app/index.tsx to edit this screen.
       </Text>
 
-      <View style={styles.container}>
+      <View style={styles.container, {height:50}}>
         <TextInput style={styles.input}
-        placeholder = "Enter food"
-        value = {food}
-        onChangeText = {setFood}
+        placeholder = "Enter the food's name"
+        value = {foodName}
+        onChangeText = {setFoodName}
         />
       </View>
+
+      <View style={styles.container, {height:50}}>
+              <TextInput style={styles.input}
+              placeholder = "Enter the food's energy"
+              value = {foodEnergy}
+              onChangeText = {setFoodEnergy}
+              />
+      </View>
+
+      <View style={styles.container, {height:50}}>
+              <TextInput style={styles.input}
+              placeholder = "Enter the food's protein"
+              value = {foodProtein}
+              onChangeText = {setFoodProtein}
+              />
+      </View>
+
+      <View style={styles.container, {height:50}}>
+              <TextInput style={styles.input}
+              placeholder = "Enter the food's carbs"
+              value = {foodCarbs}
+              onChangeText = {setFoodCarbs}
+              />
+      </View>
+
+      <View style={styles.container, {height:50}}>
+              <TextInput style={styles.input}
+              placeholder = "Enter the food's fat"
+              value = {foodFat}
+              onChangeText = {setFoodFat}
+              />
+      </View>
+
       <TouchableOpacity style={styles.button} onPress={handlePress}>
         <Text style={styles.text}>Submit</Text>"
       </TouchableOpacity>
 
-      <Text style={styles.text}>
-          You entered: {finalData}
-      </Text>
+      <Text style={styles.text}>You entered:</Text>
+        {finalData.map((item, index) => (
+          <Text key={index} style={styles.text}>
+            {item.label}: {item.value}
+          </Text>
+        ))}
     </View>
   );
 }
@@ -39,7 +90,7 @@ export default function Index() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#ffffff',
         paddingTop: StatusBar.currentHeight
         },
     input: {
