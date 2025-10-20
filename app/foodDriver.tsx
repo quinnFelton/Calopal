@@ -1,6 +1,6 @@
 import { Text, View, TextInput, Button, StyleSheet, StatusBar, TouchableOpacity} from "react-native";
 import { useState } from "react";
-import { styles } from "styles";
+import { styles } from "./styles";
 
 export default function foodDriver() {
     const  [foodName, setFoodName] = useState("");
