@@ -1,6 +1,6 @@
 import { Text, View } from "react-native";
 //import { useState } from "react";
-//import foodDriver from "./foodDriver";
+import foodDriver from "../screens/foodDriver";
 //import { styles } from "./styles";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
@@ -37,7 +37,7 @@ export default function Index() {
           <Tab.Navigator>
             <Tab.Screen name="Home" component = {HomeScreen}/>
             <Tab.Screen name="Goals" component = {GoalScreen}/>
-            <Tab.Screen name="Input" component = {FoodInputScreen}/>
+            <Tab.Screen name="Input" component = {foodDriver}/>
           </Tab.Navigator>
         </NavigationContainer>
       );
