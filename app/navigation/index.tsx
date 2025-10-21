@@ -3,7 +3,6 @@ import { Text, View } from "react-native";
 import foodDriver from "../screens/foodDriver";
 //import { styles } from "./styles";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { NavigationContainer } from "@react-navigation/native";
 
 const Tab = createBottomTabNavigator();
 
@@ -33,12 +32,10 @@ function FoodInputScreen() {
 
 export default function Index() {
     return (
-        <NavigationContainer> //Wrapped in NavigationContainer for future's sake. currently unneeded
           <Tab.Navigator>
             <Tab.Screen name="Home" component = {HomeScreen}/>
             <Tab.Screen name="Goals" component = {GoalScreen}/>
             <Tab.Screen name="Input" component = {foodDriver}/>
           </Tab.Navigator>
-        </NavigationContainer>
       );
 }
