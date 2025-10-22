@@ -1,0 +1,44 @@
+import { Text, View } from "react-native";
+//import { useState } from "react";
+//import foodDriver from "./foodDriver";
+//import { styles } from "./styles";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { NavigationContainer } from "@react-navigation/native";
+
+const Tab = createBottomTabNavigator();
+
+function HomeScreen() {
+  return (
+    <View>
+      <Text>"This is the home screen.</Text>
+    </View>
+  )
+}
+
+function GoalScreen() {
+  return (
+    <View>
+      <Text>"This is the goal screen.</Text>
+    </View>
+  )
+}
+
+function FoodInputScreen() {
+  return (
+    <View>
+      <Text>"This is the food input screen.</Text>
+    </View>
+  )
+}
+
+export default function Index() {
+    return (
+        <NavigationContainer> //Wrapped in NavigationContainer for future's sake. currently unneeded
+          <Tab.Navigator>
+            <Tab.Screen name="Home" component = {HomeScreen}/>
+            <Tab.Screen name="Goals" component = {GoalScreen}/>
+            <Tab.Screen name="Input" component = {FoodInputScreen}/>
+          </Tab.Navigator>
+        </NavigationContainer>
+      );
+}
