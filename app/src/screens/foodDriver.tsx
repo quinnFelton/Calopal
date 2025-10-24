@@ -13,25 +13,20 @@ export default function foodDriver() {
     const  [foodFat, setFoodFat] = useState("");
 
     const handleSubmit = async () => {
-        try {
-          await drizzleDb.insert(foods).values({
-            name: foodName,
-            calories: Number(foodEnergy),
-            protein: Number(foodProtein),
-            carbs: Number(foodCarbs),
-            fat: Number(foodFat),
-          });
 
-          Alert.alert("Success", "Saved successfully!");
-          setFoodName("");
-          setFoodEnergy("");
-          setFoodProtein("");
-          setFoodCarbs("");
-          setFoodFat("");
-        } catch (error) {
-          console.error("Error inserting food:", error);
-          Alert.alert("Error", "Failed to save food data.");
-        }
+      await drizzle.insert(foods).values({
+        name: foodName,
+        calories: Number(foodEnergy),
+        protein: Number(foodProtein),
+        carbs: Number(foodCarbs),
+        fat: Number(foodFat),
+      });
+      setFoodName("");
+      setFoodEnergy("");
+      setFoodProtein("");
+      setFoodCarbs("");
+      setFoodFat("");
+
       };
 
     return (

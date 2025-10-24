@@ -29,8 +29,8 @@ export const styles = StyleSheet.create({
         fontSize: 20
         },
     button: {
-        height:50,
-        marginTop:70,
+//         height:50,
+//         marginTop:70,
         backgroundColor:"#2bbefb"
         }
     })
