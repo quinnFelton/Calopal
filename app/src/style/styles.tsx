@@ -4,13 +4,24 @@ export const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#ffffff',
-        paddingTop: StatusBar.currentHeight
+        paddingTop: StatusBar.currentHeight,
+        height:50
         },
+    row: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 15,
+      },
     input: {
-        height: 40,
-        margin: 12,
-        padding: 10,
-        borderWidth: 1
+        marginBottom: 20
+//         height: 40,
+//         margin: 12,
+//         padding: 10,
+//         borderWidth: 1
+        },
+    smallInput: {
+        flex:1,
+        marginHorizontal: 5
         },
     text: {
         textAlign: 'center',

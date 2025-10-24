@@ -1,6 +1,9 @@
 import { useState } from "react";
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View, SafeAreaView } from "react-native";
 import { styles } from "../style/styles";
+import { TextInput, Button } from 'react-native-paper';
+import { drizzle } from 'drizzle-ord/mysql2';
+import { foods } from '../db/schema';
 
 export default function foodDriver() {
     const  [foodName, setFoodName] = useState("");
@@ -8,82 +11,86 @@ export default function foodDriver() {
     const  [foodProtein, setFoodProtein] = useState("");
     const  [foodCarbs, setFoodCarbs] = useState("");
     const  [foodFat, setFoodFat] = useState("");
-    const  [finalData, setFinalData] = useState<{ label: string; value: string }[]>([]);
-    const handlePress = () => {
-        setFinalData([
-              { label: "foodName", value: foodName },
-              { label: "foodEnergy", value: foodEnergy },
-              { label: "foodProtein", value: foodProtein },
-              { label: "foodCarbs", value: foodCarbs },
-              { label: "foodFat", value: foodFat },
-            ]);
 
-        setFoodName('');
-        setFoodEnergy('');
-        setFoodProtein('');
-        setFoodCarbs('');
-        setFoodFat('');
+    const handleSubmit = async () => {
+        try {
+          await drizzleDb.insert(foods).values({
+            name: foodName,
+            calories: Number(foodEnergy),
+            protein: Number(foodProtein),
+            carbs: Number(foodCarbs),
+            fat: Number(foodFat),
+          });
+
+          Alert.alert("Success", "Saved successfully!");
+          setFoodName("");
+          setFoodEnergy("");
+          setFoodProtein("");
+          setFoodCarbs("");
+          setFoodFat("");
+        } catch (error) {
+          console.error("Error inserting food:", error);
+          Alert.alert("Error", "Failed to save food data.");
         }
-  return (
-    <View>
-      <Text style = {{
-          fontSize: 30,
-          marginTop: 80,
-          textAlign: 'center'
-      }}>
-        Edit app/index.tsx to edit this screen.
-      </Text>
+      };
 
-      <View style={styles.container, {height:50}}>
-        <TextInput style={styles.input}
-        placeholder = "Enter the food's name"
-        value = {foodName}
-        onChangeText = {setFoodName}
-        />
-      </View>
-
-      <View style={styles.container, {height:50}}>
-              <TextInput style={styles.input}
-              placeholder = "Enter the food's energy"
-              value = {foodEnergy}
-              onChangeText = {setFoodEnergy}
+    return (
+    <SafeAreaView style={styles.container}>
+              {/* Food Name */}
+              <TextInput
+                label="Food Name"
+                value={foodName}
+                onChangeText={setFoodName}
+                mode="outlined"
+                style={styles.input}
               />
-      </View>
 
-      <View style={styles.container, {height:50}}>
-              <TextInput style={styles.input}
-              placeholder = "Enter the food's protein"
-              value = {foodProtein}
-              onChangeText = {setFoodProtein}
-              />
-      </View>
+              {/* Numeric Inputs (Energy, Protein, Carbs, Fat) */}
 
-      <View style={styles.container, {height:50}}>
-              <TextInput style={styles.input}
-              placeholder = "Enter the food's carbs"
-              value = {foodCarbs}
-              onChangeText = {setFoodCarbs}
-              />
-      </View>
+              <View style={styles.row}>
+                <TextInput
+                  label="Energy (cal)"
+                  value={foodEnergy}
+                  onChangeText={setFoodEnergy}
+                  mode="outlined"
+                  keyboardType="numeric"
+                  style={styles.smallInput}
+                />
+                <TextInput
+                  label="Protein (g)"
+                  value={foodProtein}
+                  onChangeText={setFoodProtein}
+                  mode="outlined"
+                  keyboardType="numeric"
+                  style={styles.smallInput}
+                />
+              </View>
 
-      <View style={styles.container, {height:50}}>
-              <TextInput style={styles.input}
-              placeholder = "Enter the food's fat"
-              value = {foodFat}
-              onChangeText = {setFoodFat}
-              />
-      </View>
+              <View style={styles.row}>
+                <TextInput
+                  label="Carbs (g)"
+                  value={foodCarbs}
+                  onChangeText={setFoodCarbs}
+                  mode="outlined"
+                  keyboardType="numeric"
+                  style={styles.smallInput}
+                />
+                <TextInput
+                  label="Fat (g)"
+                  value={foodFat}
+                  onChangeText={setFoodFat}
+                  mode="outlined"
+                  keyboardType="numeric"
+                  style={styles.smallInput}
+                />
+              </View>
 
-      <TouchableOpacity style={styles.button} onPress={handlePress}>
-        <Text style={styles.text}>Submit</Text>"
-      </TouchableOpacity>
+              {/* Submit Button */}
+              <Button mode="contained" onPress={handleSubmit} style={styles.button}>
+                Submit
+              </Button>
 
-      <Text style={styles.text}>You entered:</Text>
-        {finalData.map((item, index) => (
-          <Text key={index} style={styles.text}>
-            {item.label}: {item.value}
-          </Text>
-        ))}
-    </View>
-  );
+the
+    </SafeAreaView>
+    );
 }
