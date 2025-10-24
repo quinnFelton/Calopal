@@ -13,13 +13,13 @@ export default function Index() {
     return (
           <Tab.Navigator
             screenOptions={({ route }) => ({
-              tabBarIcon: ({size, color}) => {
+              tabBarIcon: ({ color}) => {
                 if (route.name === 'Home') {
-                  return <FontAwesome name={'home'} size={size} color={color} />;
+                  return <FontAwesome name={'home'} size={35} color={color} />;
                 } else if (route.name === 'Goals') {
-                  return <FontAwesome name={'flag-checkered'} size={size} color={color} />;
+                  return <FontAwesome name={'flag-checkered'} size={30} height={25} color={color} />;
                 } else {
-                  return <Ionicons name={'fast-food'} size={size} color={color} />;
+                  return <Ionicons name={'fast-food'} size={33} color={color} />;
                 }
               },
               tabBarActiveTintColor: 'yellow',
@@ -28,6 +28,7 @@ export default function Index() {
               tabBarInactiveBackgroundColor: '#CDB500',
               animation: 'shift',
               tabBarShowLabel: false,
+              headerShown: false,
             })}
             backBehavior= 'firstRoute'
           >
