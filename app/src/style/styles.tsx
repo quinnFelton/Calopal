@@ -12,6 +12,11 @@ export const styles = StyleSheet.create({
         justifyContent: 'space-between',
         marginBottom: 15,
       },
+    goalItem: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
+      },
     input: {
         marginBottom: 20
 //         height: 40,
