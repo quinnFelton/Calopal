@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Text, TouchableOpacity, View, SafeAreaView } from "react-native";
 import { styles } from "../style/styles";
 import { TextInput, Button } from 'react-native-paper';
-import { drizzle } from 'drizzle-ord/mysql2';
+import { drizzle } from 'drizzle-orm/expo-sqlite';
 import { foods } from '../db/schema';
 
 export default function foodDriver() {
