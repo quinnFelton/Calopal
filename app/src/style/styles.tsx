@@ -37,5 +37,35 @@ export const styles = StyleSheet.create({
 //         height:50,
 //         marginTop:70,
         backgroundColor:"#2bbefb"
-        }
+        },
+    GoalInput: {
+        alignItems: "center",
+        padding: 10
+    },
+    GoalInputBody: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        width: 100,
+        borderWidth: 1,
+        borderColor: "black",
+        borderRadius: 5
+    },
+    GoalInputStepper: {
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        gap: 0
+    },
+    GoalInputButton: {
+        height: 25,
+        width: 25,
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    GoalInputText: {
+        textAlign: "center",
+        fontSize: 24,
+        margin: 10
+    }
     })
