@@ -109,7 +109,7 @@ const APIScreen: React.FC = () => {
                                 <Text>Calories: {food.calories ?? "N/A"} cal </Text>
                                 <Text>Protein: {food.protein ?? "N/A"} g</Text>
                                 <Text>Fat: {food.fat ?? "N/A"} g</Text>
-                                <Text>Carbs: {food.carbs ?? "N/A"} g<Text>
+                                <Text>Carbs: {food.carbs ?? "N/A"} g</Text>
                             </View>
                         ))}
                     </ScrollView>

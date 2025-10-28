@@ -68,7 +68,7 @@ export const styles = StyleSheet.create({
         fontSize: 24,
         margin: 10
     },
-    loader{
+    loader: {
         marginTop:40,
     },
     card: {
