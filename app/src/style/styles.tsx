@@ -1,4 +1,4 @@
-import { Text, View, TextInput, Button, StyleSheet, StatusBar, TouchableOpacity} from "react-native";
+import { StatusBar, StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
     container: {
@@ -91,5 +91,16 @@ export const styles = StyleSheet.create({
         fontSize: 14,
         marginBottom: 6,
         color: "#666666"
+    },
+    //The style below is a style that should let the image used in ImageBackground 
+    //sufficiently cover the whole screen without distorting the original image.
+    backgroundImage: {
+        position: "absolute",
+        top: 0,
+        left: 0,
+        bottom: 0,
+        right: 0,
+        flex: 1,
+        alignItems: "center"
     }
     })
