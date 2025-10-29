@@ -43,8 +43,13 @@ const APIScreen: React.FC = () => {
 
         try{
             const formatedItem = query.trim().replace(/\s+/g, "%20");
-            const url = 'https://api.nal.usda.gov/fdc/v1/foods/search?api_key=DEMO_KEY&query=${formatedItem}&pageSize=10';
-            const response = await fetch(url);
+            const url = 'https://api.nal.usda.gov/fdc/v1/foods/search?api_key=yu3dMVtkcdb0z4lHxEVIxUslBUvAo38pKUajVPYq&query=${formatedItem}&pageSize=10';
+            const response = await fetch(url, {
+              method: "GET",
+              headers: {
+                Accept: "application/json",
+              },
+            });
             const data = await response.json();
 
             if(!data.foods) {
