@@ -1,16 +1,28 @@
 import { useState } from "react";
 import { Text, View, Modal, SafeAreaView, Pressable } from "react-native";
-import { Button } from 'react-native-paper';
+import { TextInput, Button } from 'react-native-paper';
 import { styles } from "../style/styles";
 
 //Currently just placeholder information to verify that nav bar works. | 10/21/2025 | Vinh
 
+function goalSuccess(value: number, goal: number, over_under: boolean) {
+    if (over_under === true) {
+        return value >= goal;
+    }
+    return value <= goal;
+}
+
 function GoalDisplay(
-    {calories, protein, carbs, fat, calories_goal, protein_goal, carbs_goal, fat_goal}: {
+    {calories, protein, carbs, fat,
+        calories_goal, protein_goal, carbs_goal, fat_goal,
+        calories_overUnder, protein_overUnder,
+        carbs_overUnder, fat_overUnder}: {
     calories: number; protein: number;
     carbs: number; fat: number;
     calories_goal: number; protein_goal: number;
     carbs_goal: number; fat_goal: number;
+    calories_overUnder: boolean; protein_overUnder: boolean;
+    carbs_overUnder: boolean; fat_overUnder: boolean;
     }) {
     return (
         <View>
@@ -22,23 +34,47 @@ function GoalDisplay(
 
             <View style={styles.row}>
                 <View style={styles.goalItem}>
-                    <Text style={styles.text}>{calories}/{calories_goal}</Text>
+                    <Text style={styles.goalText}>
+                        <Text style={
+                            goalSuccess(calories, calories_goal, calories_overUnder)
+                                ? styles.goalTextSuccess
+                                : styles.goalTextFailure
+                        }>{calories}</Text>
+                    /{calories_goal}</Text>
                     <Text>Calories</Text>
                 </View>
                 <View style={styles.goalItem}>
-                    <Text style={styles.text}>{protein}/{protein_goal}</Text>
+                    <Text style={styles.goalText}>
+                        <Text style={
+                            goalSuccess(protein, protein_goal, protein_overUnder)
+                                ? styles.goalTextSuccess
+                                : styles.goalTextFailure
+                        }>{protein}</Text>
+                    /{protein_goal}</Text>
                     <Text>Protein (g)</Text>
                 </View>
             </View>
 
             <View style={styles.row}>
                 <View style={styles.goalItem}>
-                    <Text style={styles.text}>{fat}/{fat_goal}</Text>
+                    <Text style={styles.text}>
+                    <Text style={
+                        goalSuccess(fat, fat_goal, fat_overUnder)
+                            ? styles.goalTextSuccess
+                            : styles.goalTextFailure
+                    }>{fat}</Text>
+                    /{fat_goal}</Text>
                     <Text>Fat (g)</Text>
                 </View>
 
                 <View style={styles.goalItem}>
-                    <Text style={styles.text}>{carbs}/{carbs_goal}</Text>
+                    <Text style={styles.text}>
+                    <Text style={
+                        goalSuccess(carbs, carbs_goal, carbs_overUnder)
+                            ? styles.goalTextSuccess
+                            : styles.goalTextFailure
+                    }>{carbs}</Text>
+                    /{carbs_goal}</Text>
                     <Text>Carbs (g)</Text>
                 </View>
             </View>
@@ -47,41 +83,56 @@ function GoalDisplay(
     )
 }
 
-function GoalInput({name, default_value, min_value, onChange}:
-    {name: string; default_value: number; min_value: number; onChange: (value: number) => void;
+function GoalInput({name, default_value, min_value, default_over_under, onChange}:
+    {name: string; default_value: number; min_value: number; default_over_under: boolean; onChange: (value: number) => void;
     }) {
-    const [value, setValue] = useState(default_value);
+    const [goal_value, setValue] = useState(default_value);
+    const [over_under, setOverUnder] = useState(default_over_under);
 
-    const increment = () => {
-        setValue((prev) => {
-            const new_value = prev + 1;
-            onChange?.(new_value);
-            return new_value;
-        });
+    const updateValue = (new_value: number) => {
+        setValue(new_value);
+        onChange?.(new_value, over_under);
     }
 
-    const decrement = () => {
-        setValue((prev) => {
-            const new_value = Math.max(prev - 1, min_value);
-            onChange?.(new_value);
-            return new_value;
-        });
+    const updateOverUnder = (new_value: boolean) => {
+        setOverUnder(new_value);
+        onChange?.(goal_value, new_value);
     }
 
     return (
-        <View style={styles.GoalInput}>
-            <View style={styles.GoalInputBody}>
-                <Text style={styles.GoalInputText}>{value}</Text>
-                <View style={styles.GoalInputStepper}>
-                    <Pressable onPress={increment} style={styles.GoalInputButton}>
-                    <Text>+</Text>
+        <View style={styles.goalInput}>
+            <View style={styles.row}>
+                <TextInput
+                    label={name}
+                    value={goal_value}
+                    placeholder={String(goal_value)}
+                    onChangeText={updateValue}
+                    mode="outlined"
+                    inputMode="numeric"
+                    keyboardType="numeric"
+                    style={styles.smallInput}
+                />
+                <View>
+                    <Pressable
+                        onPress={() => updateOverUnder(true)}
+                        style={[
+                            styles.GoalInputButton,
+                            over_under === true && styles.GoalInputButtonSelected
+                        ]}
+                    >
+                        <Text>↑</Text>
                     </Pressable>
-                    <Pressable onPress={decrement} style={styles.GoalInputButton}>
-                    <Text>-</Text>
+                    <Pressable
+                        onPress={() => updateOverUnder(false)}
+                        style={[
+                            styles.GoalInputButton,
+                            over_under === false && styles.GoalInputButtonSelected
+                        ]}
+                    >
+                        <Text>↓</Text>
                     </Pressable>
                 </View>
              </View>
-            <Text>{name}</Text>
         </View>
     )
 }
@@ -96,6 +147,11 @@ export default function goalScreen() {
   const [protein_goal, setProteinGoal] = useState(50);
   const [fat_goal, setFatGoal] = useState(50);
   const [carbs_goal, setCarbsGoal] = useState(50);
+
+  const [calories_overUnder, setCaloriesOverUnder] = useState(true);
+  const [protein_overUnder, setProteinOverUnder] = useState(true);
+  const [fat_overUnder, setFatOverUnder] = useState(true);
+  const [carbs_overUnder, setCarbsOverUnder] = useState(true);
 
   const [modal_active, set_modal_active] = useState(false);
   const [calories_modal, setCaloriesModal] = useState(calories_goal);
@@ -117,18 +173,38 @@ export default function goalScreen() {
       calories={calories} protein={protein} fat={fat} carbs={carbs}
       calories_goal={calories_goal} protein_goal={protein_goal}
       fat_goal={fat_goal} carbs_goal={carbs_goal}
+      calories_overUnder={calories_overUnder}
+      protein_overUnder={protein_overUnder}
+      fat_overUnder={fat_overUnder}
+      carbs_overUnder={carbs_overUnder}
       />
       <Modal visible={modal_active} animationType="slide">
         <View style={styles.container}>
             <Text style={styles.text}>Modify Goals</Text>
-            <GoalInput name="Calories" default_value={calories_goal} min_value={0}
-            onChange={(val) => setCaloriesModal(val)}/>
-            <GoalInput name="Protein" default_value={protein_goal} min_value={0}
-            onChange={(val) => setProteinModal(val)}/>
-            <GoalInput name="Fat" default_value={fat_goal} min_value={0}
-            onChange={(val) => setFatModal(val)}/>
-            <GoalInput name="Carbs" default_value={carbs_modal} min_value={0}
-            onChange={(val) => setCarbsModal(val)}/>
+            <GoalInput name="Calories" default_value={calories_goal}
+            default_over_under={calories_overUnder} min_value={0}
+            onChange={(val, over_under) => {
+                setCaloriesModal(val)
+                setCaloriesOverUnder(over_under)
+            }}/>
+            <GoalInput name="Protein" default_value={protein_goal}
+            default_over_under={protein_overUnder} min_value={0}
+            onChange={(val, over_under) => {
+                setProteinModal(val)
+                setProteinOverUnder(over_under)
+            }}/>
+            <GoalInput name="Fat" default_value={fat_goal}
+            default_over_under={fat_overUnder} min_value={0}
+            onChange={(val, over_under) => {
+                setFatModal(val)
+                setFatOverUnder(over_under)
+            }}/>
+            <GoalInput name="Carbs" default_value={carbs_modal}
+            default_over_under={carbs_overUnder} min_value={0}
+            onChange={(val, over_under) => {
+                setCarbsModal(val)
+                setCarbsOverUnder(over_under)
+            }}/>
             <Button onPress={()=>updateGoals()} style={styles.button}>
                 Confirm
             </Button>
