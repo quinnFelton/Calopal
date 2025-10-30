@@ -38,36 +38,32 @@ export const styles = StyleSheet.create({
 //         marginTop:70,
         backgroundColor:"#2bbefb"
         },
-    GoalInput: {
-        alignItems: "center",
-        padding: 10
+
+    goalText: {
+        textAlign: 'center',
+        marginTop: 10,
+        fontSize: 20
     },
-    GoalInputBody: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-        width: 100,
-        borderWidth: 1,
-        borderColor: "black",
-        borderRadius: 5
+    goalTextSuccess: {
+        color: "green"
     },
-    GoalInputStepper: {
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        gap: 0
+    goalTextFailure: {
+        color: "grey"
     },
     GoalInputButton: {
         height: 25,
         width: 25,
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+        backgroundColor: "#eee",
+        borderWidth: 1,
+        borderColor: "#ccc"
     },
-    GoalInputText: {
-        textAlign: "center",
-        fontSize: 24,
-        margin: 10
+    GoalInputButtonSelected: {
+        backgroundColor: "#66a3ff",
+        borderColor: "#007bff"
     },
+
     loader: {
         marginTop:40,
     },

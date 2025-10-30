@@ -85,7 +85,6 @@ export default function foodDriver() {
                 Submit
               </Button>
 
-the
     </SafeAreaView>
     );
 }
