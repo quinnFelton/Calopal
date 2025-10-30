@@ -11,7 +11,7 @@ export default function HomeScreen() {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container} edges={['left','right']}>
-            <ImageBackground contentFit="cover" style={styles.backgroundImage}>
+            <ImageBackground source={require('../../../assets/images/home_bg.jpg')} contentFit="cover" style={styles.backgroundImage}>
               <Text style={styles.text}>Some Text Here</Text>
             </ImageBackground>
       </SafeAreaView>
