@@ -31,10 +31,15 @@ const APIScreen: React.FC = () => {
     const [foods, setFoods] = useState<ParsedFood[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
 
-    const handleSubmit = () => {
-        console.log({
-            foodName,
-        });
+    const handleSubmit = (food) => {
+        console.log(`
+            Food: ${food.name}
+            Calories: ${food.calories} cal
+            Protein: ${food.protein} g
+            Fat: ${food.fat} g
+            Carbohydrate: ${food.carbs} g
+            `);
+        // TODO
     };
 
     const handleSearch = async () => {
@@ -57,7 +62,7 @@ const APIScreen: React.FC = () => {
                 setLoading(false);
                 return;
             }
-            const parsed = data.foods.slice(0,10).map((item:FoodItem) =>{
+            const parsed = data.foods.slice(0,10).map((item:FoodItem) => {
                 const nutrients: Record<string, number | undefined > = {};
 
                 item.foodNutrients.forEach((n: Nutrient) => {
@@ -108,14 +113,16 @@ const APIScreen: React.FC = () => {
                 ) : (
                     <ScrollView>
                         {foods.map((food, index) => (
-                            <View key={index} style={styles.card}>
-                                <Text style={styles.title}> {food.name}</Text>
-                                <Text style={styles.brand}>Brand: {food.brand}</Text>
-                                <Text>Calories: {food.calories ?? "N/A"} cal </Text>
-                                <Text>Protein: {food.protein ?? "N/A"} g</Text>
-                                <Text>Fat: {food.fat ?? "N/A"} g</Text>
-                                <Text>Carbs: {food.carbs ?? "N/A"} g</Text>
-                            </View>
+                            <TouchableOpacity key={index} onPress={() => handleSubmit(food)}>
+                                <View style={styles.card}>
+                                    <Text style={styles.title}> {food.name}</Text>
+                                    <Text style={styles.brand}>Brand: {food.brand}</Text>
+                                    <Text>Calories: {food.calories ?? "N/A"} cal </Text>
+                                    <Text>Protein: {food.protein ?? "N/A"} g</Text>
+                                    <Text>Fat: {food.fat ?? "N/A"} g</Text>
+                                    <Text>Carbs: {food.carbs ?? "N/A"} g</Text>
+                                </View>
+                            </TouchableOpacity>
                         ))}
                     </ScrollView>
                 )}
