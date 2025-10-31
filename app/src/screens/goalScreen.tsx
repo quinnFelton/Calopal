@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Text, View, Modal, SafeAreaView, Pressable } from "react-native";
 import { TextInput, Button } from 'react-native-paper';
 import { styles } from "../style/styles";
+
+import { useFoods } from "../hooks/foodHook"
+import { type Food } from "../db/schema"
 
 //Currently just placeholder information to verify that nav bar works. | 10/21/2025 | Vinh
 
@@ -138,6 +141,8 @@ function GoalInput({name, default_value, min_value, default_over_under, onChange
 }
 
 export default function goalScreen() {
+  const { items, loading, refresh } = useFoods();
+
   const [calories, setCalories] = useState(500);
   const [protein, setProtein] = useState(10);
   const [fat, setFat] = useState(60);
@@ -158,6 +163,32 @@ export default function goalScreen() {
   const [protein_modal, setProteinModal] = useState(protein_goal);
   const [fat_modal, setFatModal] = useState(fat_goal);
   const [carbs_modal, setCarbsModal] = useState(carbs_goal);
+
+  useEffect(() => {
+      refresh();
+  }, [refresh]);
+
+  useEffect(() => {
+      if (!loading) {
+            if (items.length === 0) {
+                console.log("goalScreen: No items found.");
+                setCalories(0);
+                setProtein(0);
+                setFat(0);
+                setCarbs(0);
+            } else {
+                console.log(`goalScreen: ${items.length} items found.`);
+                let calorie_sum = 0, protein_sum = 0, fat_sum = 0, carbs_sum = 0;
+
+                // TODO: Find sums
+
+                setCalories(calorie_sum);
+                setProtein(protein_sum);
+                setFat(fat_sum);
+                setCarbs(carbs_sum);
+            }
+      }
+  }, [loading, items]);
 
   const updateGoals = () => {
       setCaloriesGoal(calories_modal);
