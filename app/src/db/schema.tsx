@@ -18,7 +18,25 @@ export const foods = sqliteTable('foods', {
   createdAt: text('created_at').default(sql`(CURRENT_TIMESTAMP)`),
 });
 
-// Export Task to use as an interface in your app
-export type Food = typeof foods.$inferSelect;
+export const meals = sqliteTable('meals', {
+  // Auto-generated ID
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  // String fields
+  name: text('name').notNull(),
+  
+  // Integer fields
+  food: integer('food').notNull(),
+  quantity: integer('quantity').notNull(),
+  
+  // DATETIME field - SQLite stored as ISO string
+  date: text('consumed_at').default(sql`(CURRENT_TIMESTAMP)`),
+});
 
+// Export Task to use as an interface in app
+
+//foods
+export type Food = typeof foods.$inferSelect;
 export type InsertFood = typeof foods.$inferInsert;
+//meals
+export type Meal = typeof meals.$inferSelect;
+export type InsertMeal = typeof meals.$inferInsert;
