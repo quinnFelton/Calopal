@@ -16,7 +16,7 @@ export default function RootLayout() {
   const { success, error } = useMigrations(db, migrations);
 
   const [loaded, unloaded] = useFonts({
-    'Pixelify': require('../assets/font/PixelifySans-VariableFont_wght.ttf'),
+    'Pixel': require('../assets/font/PixelatedEleganceRegular-ovyAA.ttf'),
   });
 
   useEffect(() => {

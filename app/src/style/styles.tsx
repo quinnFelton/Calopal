@@ -31,18 +31,21 @@ export const styles = StyleSheet.create({
     text: {
         textAlign: 'center',
         marginTop: 10,
-        fontSize: 20
+        fontSize: 15,
+        fontFamily: 'Pixel'
         },
+    //Pixel font is kinda huge compared to stock, so be aware of that when setting custom font sizes.
     button: {
 //         height:50,
 //         marginTop:70,
         backgroundColor:"#2bbefb"
         },
-
+    //Pixel font is kinda huge compared to stock, so be aware of that when setting custom font sizes.
     goalText: {
         textAlign: 'center',
         marginTop: 10,
-        fontSize: 20
+        fontSize: 15,
+        fontFamily: 'Pixel'
     },
     goalTextSuccess: {
         color: "green"
