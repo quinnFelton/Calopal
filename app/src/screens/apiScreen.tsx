@@ -3,7 +3,7 @@ import { Text, TouchableOpacity, View, SafeAreaView, ScrollView } from "react-na
 import { styles } from "../style/styles";
 import { TextInput, Button, ActivityIndicator } from 'react-native-paper';
 import { drizzle } from 'drizzle-orm/expo-sqlite';
-import { foods } from '../db/schema';
+import { foods, meals } from '../db/schema';
 
 interface Nutrient {
   nutrientName: string;
@@ -31,6 +31,8 @@ const APIScreen: React.FC = () => {
     const [foods, setFoods] = useState<ParsedFood[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
 
+    // Database stuff
+
     const handleSubmit = (food) => {
         console.log(`
             Food: ${food.name}
@@ -39,7 +41,7 @@ const APIScreen: React.FC = () => {
             Fat: ${food.fat} g
             Carbohydrate: ${food.carbs} g
             `);
-        // TODO
+        // TODO: Send to db
     };
 
     const handleSearch = async () => {
@@ -58,6 +60,7 @@ const APIScreen: React.FC = () => {
             const data = await response.json();
 
             if(!data.foods) {
+                // Might want to inform user of a bad search.
                 setFoods([]);
                 setLoading(false);
                 return;
