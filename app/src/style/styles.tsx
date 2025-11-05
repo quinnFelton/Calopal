@@ -1,4 +1,7 @@
 import { StatusBar, StyleSheet } from "react-native";
+import { Dimensions } from 'react-native';
+
+const { width } = Dimensions.get('window');
 
 export const styles = StyleSheet.create({
     container: {
@@ -101,5 +104,11 @@ export const styles = StyleSheet.create({
         right: 0,
         flex: 1,
         alignItems: "center"
+    },
+    searchButton:{
+        width: width * 0.5,
+        backgroundColor: "#CDB500",
+        borderRadius: 5,
+        elevation: 4,
     }
     })

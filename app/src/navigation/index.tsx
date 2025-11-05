@@ -7,13 +7,17 @@ import FoodDriver from "../screens/foodDriver";
 import GoalScreen from "../screens/goalScreen";
 import HomeScreen from "../screens/homeScreen";
 
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { NavigationContainer } from '@react-navigation/native';
+
 const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 
 //Bottom most nav is for APIScreen, which should be temporary.
 
-export default function Index() {
-    return (
-          <Tab.Navigator
+function NavBar() {
+    return(
+        <Tab.Navigator
             screenOptions={({ route }) => ({
               tabBarActiveTintColor: 'yellow',
               tabBarInactiveTintColor: 'black',
@@ -26,8 +30,8 @@ export default function Index() {
             })}
             backBehavior= 'firstRoute'
           >
-            <Tab.Screen 
-              name="Home" 
+            <Tab.Screen
+              name="Home"
               component = {HomeScreen}
               options={{
                 tabBarIcon: ({size,focused,color}) => {
@@ -37,8 +41,8 @@ export default function Index() {
                   );
                 },
               }}/>
-            <Tab.Screen 
-              name="Goals" 
+            <Tab.Screen
+              name="Goals"
               component = {GoalScreen}
               options={{
                 tabBarIcon: ({size,focused,color}) => {
@@ -48,8 +52,8 @@ export default function Index() {
                   );
                 },
               }}/>
-            <Tab.Screen 
-              name="Input" 
+            <Tab.Screen
+              name="Input"
               component = {FoodDriver}
               options={{
                 tabBarIcon: ({size,focused,color}) => {
@@ -59,17 +63,23 @@ export default function Index() {
                   );
                 },
               }}/>
-            <Tab.Screen 
-              name="Temp" 
-              component = {APIScreen}
-              options={{
-                tabBarIcon: ({size,focused,color}) => {
-                  return (
-                    <Image source={require('./Nav Bar Icons/food_icon.png')}
-                    style={{width: 35, height: 35, top: +6, tintColor: focused ? 'yellow' : 'black'}}/>
-                  );
-                },
-              }}/>
           </Tab.Navigator>
+    );
+}
+
+
+export default function Index() {
+    return (
+        <Stack.Navigator>
+            <Stack.Screen
+                name='NavBar'
+                component={NavBar}
+                options={{headerShown: false}}
+            />
+
+            <Stack.Group screenOptions= {{presentation: 'modal'}}>
+                <Stack.Screen name='apiScreen' component={APIScreen} />
+            </Stack.Group>
+        </Stack.Navigator>
     );
 }
