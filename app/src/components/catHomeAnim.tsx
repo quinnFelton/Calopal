@@ -8,7 +8,7 @@ const { width, height } = Dimensions.get('window');
 
 
 //Speed is measured as milisecond for the purposes of random calcs and timeout purposes.
-export default function CatAnim({source, size = 100, speed = 1000}) {
+export default function CatAnim({source, size = 100, speed = 1000, visible = true}) {
     const x = useSharedValue(width / 2);
     const y = useSharedValue(height / 2);
     const tabBarHeight = useBottomTabBarHeight();
@@ -54,6 +54,6 @@ export default function CatAnim({source, size = 100, speed = 1000}) {
     });
 
     return (
-        <Animated.Image source={source} style={[{ position: "absolute", width: size, height: size, resizeMode:'none'}, animStyle]}/>
+        <Animated.Image source={source} style={[{ position: "absolute", width: size, height: size, resizeMode:'none', opacity: visible ? 1 : 0}, animStyle]}/>
     );
 }
