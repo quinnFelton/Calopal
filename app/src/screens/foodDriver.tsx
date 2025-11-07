@@ -4,13 +4,12 @@ import { styles } from "../style/styles";
 import { TextInput, Button } from 'react-native-paper';
 
 import { useFoods } from "../hooks/foodHook"
-import { type Food } from "../db/schema"
 
-// import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 
 
 export default function foodDriver() {
+    const { addFood, refresh } = useFoods();
     const navigation = useNavigation();
     const  [foodName, setFoodName] = useState("");
     const  [foodEnergy, setFoodEnergy] = useState("");
@@ -20,13 +19,20 @@ export default function foodDriver() {
 
     const handleSubmit = async () => {
 
-      await drizzle.insert(foods).values({
+      const NewFood = await addFood({
         name: foodName,
         calories: Number(foodEnergy),
         protein: Number(foodProtein),
         carbs: Number(foodCarbs),
         fat: Number(foodFat),
       });
+
+      if(NewFood){
+          console.log('item successfuly added')
+      }
+      else{
+          console.log('error adding item')
+      }
       setFoodName("");
       setFoodEnergy("");
       setFoodProtein("");
