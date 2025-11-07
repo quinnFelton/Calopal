@@ -8,6 +8,20 @@
       "when": 1761086234033,
       "tag": "0000_strong_magus",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1762484675322,
+      "tag": "0001_black_miek",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1762485317267,
+      "tag": "0002_first_galactus",
+      "breakpoints": true
     }
   ]
 }

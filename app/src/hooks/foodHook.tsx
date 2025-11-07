@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useDrizzle } from "../db/drizzle";
 import { foods, type Food, type InsertFood } from "../db/schema";
 
-// Shape used when creating a new Food from the UI
+  // Shape used when creating a new Food from the UI
 // All nutrient fields are integers
 export type NewFoodInput = {
   name: string;
@@ -11,9 +11,8 @@ export type NewFoodInput = {
   carbs: number;
   proteins: number;
   fats: number;
-};
-
-// New foods normalization before insert
+  isFromApi?: boolean; // Optional, defaults to false for user-input
+};// New foods normalization before insert
 function normalizeNewFood(input: NewFoodInput): NewFoodInput {
   return {
     name: input.name.trim(),
@@ -21,6 +20,7 @@ function normalizeNewFood(input: NewFoodInput): NewFoodInput {
     carbs: Number.parseInt(String(input.carbs), 10) || 0,
     proteins: Number.parseInt(String(input.proteins), 10) || 0,
     fats: Number.parseInt(String(input.fats), 10) || 0,
+    isFromApi: input.isFromApi ?? false, // Preserve isFromApi flag if set, default false
   };
 }
 
@@ -97,6 +97,7 @@ export function useFoods() {
         carbs: normalized.carbs,
         proteins: normalized.proteins,
         fats: normalized.fats,
+        isFromApi: normalized.isFromApi ?? false, // Default to false for user input
         // createdAt defaults to CURRENT_TIMESTAMP in schema
       } as InsertFood).run?.() ?? db.insert(foods).values({
         name: normalized.name,
@@ -104,6 +105,7 @@ export function useFoods() {
         carbs: normalized.carbs,
         proteins: normalized.proteins,
         fats: normalized.fats,
+        isFromApi: normalized.isFromApi ?? false,
       } as InsertFood));
 
       // Refresh local cache
