@@ -2,14 +2,13 @@
 //import { styles } from "./styles";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Image } from 'react-native';
-import APIScreen from "../screens/apiScreen";
-import FoodDriver from "../screens/foodDriver";
-import GoalScreen from "../screens/goalScreen";
-import HomeScreen from "../screens/homeScreen";
-import FoodList from "../screens/foodList";
+import APIScreen from "./src/screens/apiScreen";
+import FoodDriver from "./src/screens/foodDriver";
+import FoodList from "./src/screens/foodList";
+import GoalScreen from "./src/screens/goalScreen";
+import HomeScreen from "./src/screens/homeScreen";
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { NavigationContainer } from '@react-navigation/native';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -27,7 +26,7 @@ function NavBar() {
               animation: 'shift',
               tabBarShowLabel: false,
               headerShown: false,
-              tabBarStyle:{height:105},
+              //tabBarStyle:{},
             })}
             backBehavior= 'firstRoute'
           >
@@ -37,7 +36,7 @@ function NavBar() {
               options={{
                 tabBarIcon: ({size,focused,color}) => {
                   return (
-                    <Image source={require('./Nav Bar Icons/home_icon.png')}
+                    <Image source={require('../assets/images/home_icon.png')}
                     style={{width: 30, height: 30, top: +6, tintColor: focused ? 'yellow' : 'black'}}/>
                   );
                 },
@@ -48,7 +47,7 @@ function NavBar() {
               options={{
                 tabBarIcon: ({size,focused,color}) => {
                   return (
-                    <Image source={require('./Nav Bar Icons/checkered_flag.png')}
+                    <Image source={require('../assets/images/checkered_flag.png')}
                     style={{width: 50, height: 30, top: +6, tintColor: focused ? 'yellow' : 'black'}}/>
                   );
                 },
@@ -59,7 +58,7 @@ function NavBar() {
               options={{
                 tabBarIcon: ({size,focused,color}) => {
                   return (
-                    <Image source={require('./Nav Bar Icons/food_icon.png')}
+                    <Image source={require('../assets/images/food_icon.png')}
                     style={{width: 35, height: 35, top: +6, tintColor: focused ? 'yellow' : 'black'}}/>
                   );
                 },
