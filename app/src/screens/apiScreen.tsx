@@ -4,6 +4,7 @@ import { styles } from "../style/styles";
 import { TextInput, Button, ActivityIndicator } from 'react-native-paper';
 import { drizzle } from 'drizzle-orm/expo-sqlite';
 import { foods, meals } from '../db/schema';
+import { NewFoodInput, useFoods } from '../hooks/foodHook';
 
 interface Nutrient {
   nutrientName: string;
@@ -33,7 +34,7 @@ const APIScreen: React.FC = () => {
 
     // Database stuff
 
-    const handleSubmit = (food) => {
+    const handleSubmit = async (food) => {
         console.log(`
             Food: ${food.name}
             Calories: ${food.calories} cal
@@ -41,7 +42,33 @@ const APIScreen: React.FC = () => {
             Fat: ${food.fat} g
             Carbohydrate: ${food.carbs} g
             `);
+        /*
         // TODO: Send to db
+        // Step 0: "Use foods"
+        const { items, loading, error, refresh, addFood, search } = useFoods();
+        // Step 1: Create a NewFoodInput object
+        const clickedFood : NewFoodInput = {
+            name: food.name,
+            calories: food.calories,
+            carbs: food.carbs,
+            protein: food.protein,
+            fat: food.fat
+        };
+        // Step 2: Add Food
+        setLoading(true);
+        try {
+            await addFood(clickedFood);
+        } catch(error) {
+            console.error("Adding Food to db error", error)
+        } finally {
+            setLoading(false);
+        }
+        // Step 3: ???
+        const matches = await searchFoods(food.name);
+        // Step 4: Profit
+        await refresh();
+        console.log("beep boop!\n", matches, "\nboop beep!");
+        */
     };
 
     const handleSearch = async () => {
