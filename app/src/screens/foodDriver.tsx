@@ -43,9 +43,6 @@ export default function foodDriver() {
 
     return (
     <SafeAreaView style={styles.container}>
-      <Button mode="contained" onPress={() => navigation.navigate('apiScreen')} style={styles.searchButton}>
-        Search
-      </Button>
 
       {/* Food Name */}
       <TextInput

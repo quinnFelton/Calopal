@@ -6,6 +6,7 @@ import APIScreen from "../screens/apiScreen";
 import FoodDriver from "../screens/foodDriver";
 import GoalScreen from "../screens/goalScreen";
 import HomeScreen from "../screens/homeScreen";
+import FoodList from "../screens/foodList";
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
@@ -54,7 +55,7 @@ function NavBar() {
               }}/>
             <Tab.Screen
               name="Input"
-              component = {FoodDriver}
+              component = {FoodList}
               options={{
                 tabBarIcon: ({size,focused,color}) => {
                   return (
@@ -79,6 +80,7 @@ export default function Index() {
 
             <Stack.Group screenOptions= {{presentation: 'modal'}}>
                 <Stack.Screen name='apiScreen' component={APIScreen} />
+                <Stack.Screen name='foodDriver' component={FoodDriver}/>
             </Stack.Group>
         </Stack.Navigator>
     );
