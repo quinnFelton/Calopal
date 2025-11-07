@@ -110,5 +110,9 @@ export const styles = StyleSheet.create({
         backgroundColor: "#CDB500",
         borderRadius: 5,
         elevation: 4,
+    },
+    errorMessage:{
+        color:"red",
+        marginBottom:8
     }
     })
