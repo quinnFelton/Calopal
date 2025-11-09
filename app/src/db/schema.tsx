@@ -64,6 +64,24 @@ export const goals = sqliteTable('goals', {
   isCompleted: integer('is_completed', { mode: 'boolean' }).notNull().default(0),
 });
 
+export const cosmetics = sqliteTable('cosmetics', {
+  // ID for cosmetic
+  id: integer('id').notNull(),
+  // Text field
+  name: text('name').notNull(),
+  // Visibility on home screen
+  visible: integer('visible', { mode: 'boolean' }).notNull().default(false),
+  // Positional arguments
+  x_pos: float('x_pos').notNull(),
+  y_pos: float('y_pos').notNull(),
+  angle: float('angle').notNull().default(0.0),
+  scale: float('scale').notNull().default(1.0),
+  // Path to image asset
+  img_path: text('img_path').notNull(),
+  // Anchoring
+  anchored_to_pet: integer('anchored_to_pet', { mode: 'boolean' }).notNull().default(false),
+});
+
 // Export Task to use as an interface in app
 
 //foods
@@ -81,3 +99,7 @@ export type InsertMealComponent = typeof meal_components.$inferInsert;
 //goals
 export type Goal = typeof goals.$inferSelect;
 export type InsertGoal = typeof goals.$inferInsert;
+
+//cosmetics
+export type Cosmetic = typeof cosmetics.$inferSelect;
+export type InsertCosmetic = typeof cosmetics.$inferInsert;
