@@ -1,10 +1,9 @@
-import { useState, useEffect } from "react";
-import { Text, View, Modal, SafeAreaView, Pressable } from "react-native";
-import { TextInput, Button } from 'react-native-paper';
+import { useEffect, useState } from "react";
+import { Modal, Pressable, SafeAreaView, Text, View } from "react-native";
+import { Button, TextInput } from 'react-native-paper';
 import { styles } from "../style/styles";
 
-import { useFoods } from "../hooks/foodHook"
-import { type Food } from "../db/schema"
+import { useFoods } from "../hooks/foodHook";
 
 //Currently just placeholder information to verify that nav bar works. | 10/21/2025 | Vinh
 
@@ -209,7 +208,7 @@ export default function goalScreen() {
       fat_overUnder={fat_overUnder}
       carbs_overUnder={carbs_overUnder}
       />
-      <Modal visible={modal_active} animationType="slide">
+      <Modal visible={modal_active} animationType="slide" onRequestClose={() => {set_modal_active(false)}}>
         <View style={styles.container}>
             <Text style={styles.text}>Modify Goals</Text>
             <GoalInput name="Calories" default_value={calories_goal}
