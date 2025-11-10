@@ -31,6 +31,7 @@ const APIScreen: React.FC = () => {
     const [query, setQuery] = useState('');
     const [foods, setFoods] = useState<ParsedFood[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
+    const { items, uFLoading, error, refresh, addFood, searchFoods } = useFoods();
 
     // Database stuff
 
@@ -42,17 +43,17 @@ const APIScreen: React.FC = () => {
             Fat: ${food.fat} g
             Carbohydrate: ${food.carbs} g
             `);
-        /*
         // TODO: Send to db
         // Step 0: "Use foods"
-        const { items, loading, error, refresh, addFood, search } = useFoods();
+
         // Step 1: Create a NewFoodInput object
         const clickedFood : NewFoodInput = {
             name: food.name,
             calories: food.calories,
             carbs: food.carbs,
-            protein: food.protein,
-            fat: food.fat
+            proteins: food.protein,
+            fats: food.fat,
+            isFromApi: true
         };
         // Step 2: Add Food
         setLoading(true);
@@ -64,11 +65,17 @@ const APIScreen: React.FC = () => {
             setLoading(false);
         }
         // Step 3: ???
-        const matches = await searchFoods(food.name);
         // Step 4: Profit
-        await refresh();
-        console.log("beep boop!\n", matches, "\nboop beep!");
-        */
+        setLoading(true);
+        try {
+            const matches = await searchFoods(food.name);
+            await refresh();
+            console.log("beep boop!\n", matches, "\nboop beep!");
+        } catch(error) {
+            console.error("Searching Food in db error", error);
+        } finally {
+            setLoading(false);
+        }
     };
 
     const handleSearch = async () => {
@@ -108,6 +115,7 @@ const APIScreen: React.FC = () => {
                     calories: nutrients.calories,
                     fat: nutrients.fat,
                     carbs: nutrients.carbs,
+                    protein: nutrients.protein
                 };
             });
 
