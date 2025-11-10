@@ -13,7 +13,7 @@ export default function foodList() {
     const [foods, setFoods] = useState(items);
     const navigation = useNavigation();
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (food) => {
 
         const NewFood = await addFood({
         name: food.name,
