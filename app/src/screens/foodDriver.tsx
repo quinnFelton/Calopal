@@ -22,9 +22,9 @@ export default function foodDriver() {
       const NewFood = await addFood({
         name: foodName,
         calories: Number(foodEnergy),
-        protein: Number(foodProtein),
+        proteins: Number(foodProtein),
         carbs: Number(foodCarbs),
-        fat: Number(foodFat),
+        fats: Number(foodFat),
       });
 
       if(NewFood){

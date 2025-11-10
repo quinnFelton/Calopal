@@ -18,9 +18,9 @@ export default function foodList() {
         const NewFood = await addFood({
         name: food.name,
         calories: food.calories,
-        protein: food.protein,
+        proteins: food.proteins,
         carbs: food.carbs,
-        fat: food.fat,
+        fats: food.fats,
         });
 
         if(NewFood){
@@ -83,8 +83,8 @@ export default function foodList() {
                                 <View style={styles.card}>
                                     <Text style={styles.title}> {food.name}</Text>
                                     <Text>Calories: {food.calories ?? "N/A"} cal </Text>
-                                    <Text>Protein: {food.protein ?? "N/A"} g</Text>
-                                    <Text>Fat: {food.fat ?? "N/A"} g</Text>
+                                    <Text>Proteins: {food.proteins ?? "N/A"} g</Text>
+                                    <Text>Fats: {food.fats ?? "N/A"} g</Text>
                                     <Text>Carbs: {food.carbs ?? "N/A"} g</Text>
                                 </View>
                             </TouchableOpacity>
