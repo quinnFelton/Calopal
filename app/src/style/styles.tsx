@@ -6,14 +6,16 @@ const { width } = Dimensions.get('window');
 export const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#ffffff',
+        backgroundColor: '#D2B48C',
         paddingTop: StatusBar.currentHeight,
-        height:50
+        paddingHorizontal: 16,
         },
     row: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginBottom: 15,
+        alignItems: 'center',
+        marginVertical: 8,
+        gap: 16,
       },
     goalItem: {
         flex: 1,
@@ -21,27 +23,36 @@ export const styles = StyleSheet.create({
         justifyContent: 'center'
       },
     input: {
-        marginBottom: 20
-//         height: 40,
-//         margin: 12,
-//         padding: 10,
-//         borderWidth: 1
+//         marginBottom: 20
+        marginVertical: 10,
+        borderRadius: 8,
+        backgroundColor: '#FFFDF5',
         },
     smallInput: {
         flex:1,
-        marginHorizontal: 5
+        marginHorizontal: 5,
+        borderRadius: 8,
+        backgroundColor: '#FFFDF5',
         },
     text: {
         textAlign: 'center',
         marginTop: 10,
         fontSize: 15,
-        fontFamily: 'Pixel'
+        fontFamily: 'Pixel',
+        color: `#3B2F2F`
         },
     //Pixel font is kinda huge compared to stock, so be aware of that when setting custom font sizes.
     button: {
 //         height:50,
 //         marginTop:70,
-        backgroundColor:"#2bbefb"
+        backgroundColor:"#CDB500",
+        borderRadius: 6,
+        paddingVertical: 10,
+        paddingHorizontal: 18,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginVertical: 8,
+        elevation: 3,
         },
     //Pixel font is kinda huge compared to stock, so be aware of that when setting custom font sizes.
     goalText: {
@@ -61,38 +72,46 @@ export const styles = StyleSheet.create({
         width: 25,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#eee",
+        backgroundColor: "#EDE6D2",
         borderWidth: 1,
-        borderColor: "#ccc"
+        borderColor: "#8B7355",
+        marginVertical: 2,
+        borderRadius: 4,
     },
     GoalInputButtonSelected: {
-        backgroundColor: "#66a3ff",
-        borderColor: "#007bff"
+        backgroundColor: "#CDB500",
+        borderColor: "#A68A00"
     },
 
     loader: {
         marginTop:40,
+        alignSelf: 'center',
     },
     card: {
-        backgroundColor: "#ffffff",
-        borderRadius: 16,
-        padding: 16,
-        marginBottom: 12,
+        backgroundColor: "#F5F5DC",
+        borderRadius: 8,
+        padding: 14,
+        marginBottom: 10,
         shadowColor: "#000000",
-        shadowOpacity: 0.1,
-        shadowOffset: {width: 0, height: 2},
-        shadowRadius: 4,
+        shadowOpacity: 0.05,
+        shadowOffset: {width: 0, height: 1},
+        shadowRadius: 2,
         elevation: 3,
+        borderWidth: 2,
+        borderColor: "#8B7355"
     },
     title: {
         fontSize: 18,
         fontWeight: "600",
         marginBottom: 4,
+        color: '#3B2F2F',
+        fontFamily: 'Pixel',
     },
     brand: {
         fontSize: 14,
         marginBottom: 6,
-        color: "#666666"
+        fontFamily: 'Pixel',
+        color: "#8B7355"
     },
     //The style below is a style that should let the image used in ImageBackground 
     //sufficiently cover the whole screen without distorting the original image.
@@ -106,10 +125,14 @@ export const styles = StyleSheet.create({
         alignItems: "center"
     },
     searchButton:{
-        width: width * 0.5,
+//         width: width * 0.5,
+        flex: 1,
         backgroundColor: "#CDB500",
-        borderRadius: 5,
-        elevation: 4,
+        borderRadius: 6,
+        elevation: 2,
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: 10,
     },
     errorMessage:{
         color:"red",

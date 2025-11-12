@@ -23,18 +23,12 @@ export default function foodList() {
         fats: food.fats,
         });
 
-        if(NewFood){
-            console.log('item successfuly added')
-        }
-        else{
-            console.log('error adding item')
-        }
-        };
+        if(NewFood) console.log('item successfuly added');
+        else console.log('error adding item');
+    };
 
     useEffect(() => {
-        if(!query) {
-            setFoods(items.slice(1,10));
-        }
+        if(!query)  setFoods(items.slice(1,10));
     }, [items, query]);
 
     const handleSearch = async () => {
@@ -48,6 +42,7 @@ export default function foodList() {
 
     return(
         <SafeAreaView style={styles.container}>
+
             <View style={styles.row}>
                 <Button mode="contained" onPress={() => navigation.navigate('foodDriver')} style={styles.searchButton}>
                     Manually Input
@@ -58,7 +53,7 @@ export default function foodList() {
                 </Button>
             </View>
 
-            <Text variant='headlineMedium' style={{ marginBottom: 8 }}>
+            <Text variant='headlineMedium' style={[styles.title, { textAlign: 'center', marginVertical: 12}]}>
                 Search Past Eaten Foods
             </Text>
 
@@ -77,15 +72,15 @@ export default function foodList() {
             {loading ? (
                 <ActivityIndicator animating={true} styles={styles.loader} />
                 ) : (
-                    <ScrollView>
+                    <ScrollView contentContainerStyle ={{ paddingVertical: 8}}>
                         {foods.map((food, index) => (
                             <TouchableOpacity key={index} onPress={() => handleSubmit(food)}>
                                 <View style={styles.card}>
                                     <Text style={styles.title}> {food.name}</Text>
-                                    <Text>Calories: {food.calories ?? "N/A"} cal </Text>
-                                    <Text>Proteins: {food.proteins ?? "N/A"} g</Text>
-                                    <Text>Fats: {food.fats ?? "N/A"} g</Text>
-                                    <Text>Carbs: {food.carbs ?? "N/A"} g</Text>
+                                    <Text style={styles.text}>Calories: {food.calories ?? "N/A"} cal </Text>
+                                    <Text style={styles.text}>Proteins: {food.proteins ?? "N/A"} g</Text>
+                                    <Text style={styles.text}>Fats: {food.fats ?? "N/A"} g</Text>
+                                    <Text style={styles.text}>Carbs: {food.carbs ?? "N/A"} g</Text>
                                 </View>
                             </TouchableOpacity>
                         ))}

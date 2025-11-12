@@ -130,6 +130,10 @@ const APIScreen: React.FC = () => {
 
     return(
         <View style={styles.container}>
+            <Text variant='headlineMedium' style={[styles.title, { textAlign: 'center', marginVertical: 12}]}>
+                Search for Food
+            </Text>
+
             <TextInput
                 label="Search Food"
                 value={query}
@@ -155,10 +159,10 @@ const APIScreen: React.FC = () => {
                                 <View style={styles.card}>
                                     <Text style={styles.title}> {food.name}</Text>
                                     <Text style={styles.brand}>Brand: {food.brand}</Text>
-                                    <Text>Calories: {food.calories ?? "N/A"} cal </Text>
-                                    <Text>Protein: {food.protein ?? "N/A"} g</Text>
-                                    <Text>Fat: {food.fat ?? "N/A"} g</Text>
-                                    <Text>Carbs: {food.carbs ?? "N/A"} g</Text>
+                                    <Text style={styles.text}>Calories: {food.calories ?? "N/A"} cal </Text>
+                                    <Text style={styles.text}>Protein: {food.protein ?? "N/A"} g</Text>
+                                    <Text style={styles.text}>Fat: {food.fat ?? "N/A"} g</Text>
+                                    <Text style={styles.text}>Carbs: {food.carbs ?? "N/A"} g</Text>
                                 </View>
                             </TouchableOpacity>
                         ))}
