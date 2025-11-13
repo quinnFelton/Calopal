@@ -137,5 +137,16 @@ export const styles = StyleSheet.create({
     errorMessage:{
         color:"red",
         marginBottom:8
+    },
+    cosmeticButton:{
+        backgroundColor:"#CDB500",
+        textColor: "white",
+        borderRadius: 6,
+        //paddingVertical: 10,
+        //paddingHorizontal: 18,
+        alignItems: 'center',
+        justifyContent: 'left',
+        marginVertical: 8,
+        elevation: 3,
     }
     })
