@@ -7,6 +7,7 @@ import FoodDriver from "./src/screens/foodDriver";
 import FoodList from "./src/screens/foodList";
 import GoalScreen from "./src/screens/goalScreen";
 import HomeScreen from "./src/screens/homeScreen";
+import TestCosmetics from "./src/screens/TestCosmetics";
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -63,6 +64,19 @@ function NavBar() {
                   );
                 },
               }}/>
+          {/*
+          <Tab.Screen
+            name="Test"
+            component = {TestCosmetics}
+            options={{
+              tabBarIcon: ({size,focused,color}) => {
+                return (
+                  <Image source={require('../assets/images/food_icon.png')}
+                  style={{width: 35, height: 35, top: +6, tintColor: focused ? 'yellow' : 'black'}}/>
+                );
+              },
+            }}/>
+            */}
           </Tab.Navigator>
     );
 }
