@@ -77,9 +77,9 @@ export const cosmetics = sqliteTable('cosmetics', {
   angle: float('angle').notNull().default(0.0),
   scale: float('scale').notNull().default(1.0),
   // Path to image asset
-  img_path: text('img_path').notNull(),
+  imagePath: text('img_path').notNull(),
   // Anchoring
-  anchored_to_pet: integer('anchored_to_pet', { mode: 'boolean' }).notNull().default(false),
+  anchoredToPet: integer('anchored_to_pet', { mode: 'boolean' }).notNull().default(false),
 });
 
 // Export Task to use as an interface in app
