@@ -26,7 +26,7 @@ export default function HomeScreen() {
           <CatAnim source = {require('../../../assets/images/monkey.png')} size = {140} visible = {monkeyVis}/>
         </ImageBackground>
         <Button mode='contained'
-          //onPress={() => navigation.navigate('TestCosmetics')}
+          onPress={() => navigation.navigate('CosmeticScreen')}
           style={styles.cosmeticButton}>
           Add Decorations
         </Button>

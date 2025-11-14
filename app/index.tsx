@@ -7,6 +7,7 @@ import FoodDriver from "./src/screens/foodDriver";
 import FoodList from "./src/screens/foodList";
 import GoalScreen from "./src/screens/goalScreen";
 import HomeScreen from "./src/screens/homeScreen";
+import CosmeticScreen from "./src/screens/CosmeticScreen"
 import TestCosmetics from "./src/screens/TestCosmetics";
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -94,6 +95,7 @@ export default function Index() {
             <Stack.Group screenOptions= {{presentation: 'modal'}}>
                 <Stack.Screen name='apiScreen' component={APIScreen} />
                 <Stack.Screen name='foodDriver' component={FoodDriver}/>
+                <Stack.Screen name='CosmeticScreen' component={CosmeticScreen}/>
             </Stack.Group>
         </Stack.Navigator>
     );

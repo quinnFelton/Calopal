@@ -148,5 +148,9 @@ export const styles = StyleSheet.create({
         justifyContent: 'left',
         marginVertical: 8,
         elevation: 3,
+    },
+    bgContainer:{
+        flex: 1,
+        margin: 16,
     }
     })
