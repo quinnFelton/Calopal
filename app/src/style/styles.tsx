@@ -152,5 +152,51 @@ export const styles = StyleSheet.create({
     bgContainer:{
         flex: 1,
         margin: 16,
+    },
+    cosmeticCard:{
+      backgroundColor: "#F5F5DC",
+      borderRadius: 8,
+      padding: 14,
+      marginBottom: 10,
+      shadowColor: "#000000",
+      shadowOpacity: 0.05,
+      shadowOffset: {width: 0, height: 1},
+      shadowRadius: 2,
+      elevation: 3,
+      borderWidth: 2,
+      borderColor: "#8B7355",
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between"
+    },
+    cosmeticCardImage:{
+      width: 64,
+      height: 64,
+      borderRadius: 8,
+      borderWidth: 2,
+      borderColor: "#8B7355",
+      backgroundColor: "rgba(70, 50, 25, 0.3)"
+    },
+    CalopalCheckboxEnabled:{
+      backgroundColor: "rgba(70, 50, 25, 0.3)",
+      borderRadius: 8,
+      width: 32,
+      height: 32,
+      borderWidth: 3,
+      borderColor: "#8B7355",
+      justifyContent: 'center'
+    },
+    CalopalCheckboxDisabled:{
+        width: 32,
+        height: 32,
+        borderRadius: 8,
+        borderWidth: 2,
+        borderColor: "#8B7355",
+        justifyContent: 'center'
+    },
+    CalopalCheckboxText:{
+      fontFamily: 'Pixel',
+      textAlign: 'center',
+      color: "#4f4131",
     }
     })
