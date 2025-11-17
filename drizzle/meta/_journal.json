@@ -22,6 +22,13 @@
       "when": 1762485317267,
       "tag": "0002_first_galactus",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1763410170568,
+      "tag": "0003_neat_blob",
+      "breakpoints": true
     }
   ]
 }
