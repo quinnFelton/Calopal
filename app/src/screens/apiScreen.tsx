@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Text, TouchableOpacity, View, SafeAreaView, ScrollView } from "react-native";
+import { Modal, Text, TouchableOpacity, View, SafeAreaView, ScrollView } from "react-native";
 import { styles } from "../style/styles";
 import { TextInput, Button, ActivityIndicator } from 'react-native-paper';
 import { drizzle } from 'drizzle-orm/expo-sqlite';
@@ -32,6 +32,7 @@ const APIScreen: React.FC = () => {
     const [foods, setFoods] = useState<ParsedFood[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const { items, uFLoading, error, refresh, addFood, searchFoods } = useFoods();
+    const [modal_active, set_modal_active] = useState(false);
 
     // Database stuff
 
@@ -76,6 +77,7 @@ const APIScreen: React.FC = () => {
         } finally {
             setLoading(false);
         }
+        set_modal_active(true);
     };
 
     const handleSearch = async () => {
@@ -168,6 +170,14 @@ const APIScreen: React.FC = () => {
                         ))}
                     </ScrollView>
                 )}
+            <Modal visible={modal_active} animationType="slide" onRequestClose={() => {set_modal_active(false)}}>
+                <View style={styles.container}>
+                    <Text style={styles.text}>How many servings?</Text>
+                </View>
+                <Button style={styles.button} onPress={()=>set_modal_active(false)}>
+                        Finish
+                </Button>
+            </Modal>
             </View>
     );
 };
