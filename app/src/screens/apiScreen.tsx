@@ -28,14 +28,35 @@ interface ParsedFood {
 }
 
 const APIScreen: React.FC = () => {
+    // For Database
     const [query, setQuery] = useState('');
     const [foods, setFoods] = useState<ParsedFood[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
+
+    // For Foods
     const { items, uFLoading, error, refresh, addFood, searchFoods } = useFoods();
+    const [savedFood, setSavedFood] = useState<NewFoodInput>({
+        name: "",
+        calories: 0.0,
+        carbs: 0.0,
+        proteins: 0.0,
+        fats: 0.0,
+        isFromApi: false
+    });
+
+
+    // For servings
     const [modal_active, set_modal_active] = useState(false);
+    const [serving, setServing] = useState('');
+    const handleNumberChange = (text) => {
+        // Basic validation to allow numbers and a single decimal point
+        const regex = /^\d*\.?\d*$/;
+        if (regex.test(text)) {
+            setServing(text);
+        }
+    };
 
     // Database stuff
-
     const handleSubmit = async (food) => {
         console.log(`
             Food: ${food.name}
@@ -47,7 +68,15 @@ const APIScreen: React.FC = () => {
         // TODO: Send to db
         // Step 0: "Use foods"
 
-        // Step 1: Create a NewFoodInput object
+        // Step 1: Create a NewFoodInput object and save one as well
+        setSavedFood({
+            name: food.name,
+            calories: food.calories,
+            carbs: food.carbs,
+            proteins: food.protein,
+            fats: food.fat,
+            isFromApi: true
+        });
         const clickedFood : NewFoodInput = {
             name: food.name,
             calories: food.calories,
@@ -173,10 +202,23 @@ const APIScreen: React.FC = () => {
             <Modal visible={modal_active} animationType="slide" onRequestClose={() => {set_modal_active(false)}}>
                 <View style={styles.container}>
                     <Text style={styles.text}>How many servings?</Text>
+                    <Text>{savedFood.name}</Text>
+                    <Text>Calories: {savedFood.calories}</Text>
+                    <Text>Protein: {savedFood.proteins}</Text>
+                    <Text>Fat: {savedFood.fats}</Text>
+                    <Text>Carbs: {savedFood.carbs}</Text>
+                    <TextInput
+                        // label="Serving Size"
+                        style={styles.input}
+                        value={serving}
+                        onChangeText={handleNumberChange}
+                        keyboardType="numeric" // Displays a numeric keyboard
+                        placeholder="Number of servings"
+                    />
+                    <Button style={styles.button} onPress={()=>set_modal_active(false)}>
+                            Finish
+                    </Button>
                 </View>
-                <Button style={styles.button} onPress={()=>set_modal_active(false)}>
-                        Finish
-                </Button>
             </Modal>
             </View>
     );
