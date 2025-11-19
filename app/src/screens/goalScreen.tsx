@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Modal, Pressable, SafeAreaView, Text, View } from "react-native";
+import { Modal, Pressable, SafeAreaView, Text, View, Image } from "react-native";
 import { Button, TextInput } from 'react-native-paper';
 import { styles } from "../style/styles";
 
@@ -196,18 +196,61 @@ export default function goalScreen() {
       setCarbsGoal(carbs_modal);
       set_modal_active(false);
   }
+  const weekStatus = {
+    Monday: "✅",
+    Tuesday: "❌",
+    Wednesday: "✅",
+    Thursday: "✅",
+    Friday: "❌",
+    Saturday: "☐",
+    Sunday: "☐",
+  };
 
   return (
     <SafeAreaView style={styles.container}>
-      <GoalDisplay
-      calories={calories} protein={protein} fat={fat} carbs={carbs}
-      calories_goal={calories_goal} protein_goal={protein_goal}
-      fat_goal={fat_goal} carbs_goal={carbs_goal}
-      calories_overUnder={calories_overUnder}
-      protein_overUnder={protein_overUnder}
-      fat_overUnder={fat_overUnder}
-      carbs_overUnder={carbs_overUnder}
-      />
+      <View style={styles.card}>
+        <Text variant='headlineMedium' style={[styles.title, { textAlign: 'center', marginVertical: 12}]}>
+               Weekly Report
+        </Text>
+        <View style={styles.row}>
+           {Object.entries(weekStatus).map(([day, status]) => (
+                 <Text key={day} style={{ fontSize: 24 }}>
+                   {status}
+                 </Text>
+           ))}
+        </View>
+      </View>
+      <View
+        style={{
+          width: "100%",
+          alignItems: "flex-end",
+          marginTop: -20,
+          marginBottom:-20,
+        }}
+      >
+        <Image
+          source={require("../../../assets/images/Cat Assets/cat_sit_neutral.png")}
+          style={{
+            width: 120,
+            height: 120,
+            resizeMode: "contain",
+          }}
+        />
+      </View>
+      <View style={styles.card}>
+          <GoalDisplay
+          calories={calories} protein={protein} fat={fat} carbs={carbs}
+          calories_goal={calories_goal} protein_goal={protein_goal}
+          fat_goal={fat_goal} carbs_goal={carbs_goal}
+          calories_overUnder={calories_overUnder}
+          protein_overUnder={protein_overUnder}
+          fat_overUnder={fat_overUnder}
+          carbs_overUnder={carbs_overUnder}
+          />
+          <Text style={styles.text}>
+            Complete 3 daily goals to count towards your weekly goal
+          </Text>
+      </View>
       <Modal visible={modal_active} animationType="slide" onRequestClose={() => {set_modal_active(false)}}>
         <View style={styles.container}>
             <Text style={styles.text}>Modify Goals</Text>
