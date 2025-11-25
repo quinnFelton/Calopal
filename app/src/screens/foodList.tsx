@@ -71,7 +71,7 @@ export default function foodList() {
         else console.log('error adding meal component', error);
         setServing("");
         set_modal_active(false);
-        navigation.navigate('foodList');
+        navigation.navigate('addMeal');
     }
 
     return(

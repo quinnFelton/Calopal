@@ -134,7 +134,7 @@ const APIScreen: React.FC = () => {
         else console.log('error adding meal component', error);
         setServing("");
         set_modal_active(false);
-        navigation.navigate('foodList');
+        navigation.navigate('addMeal');
     }
 
     // For USDA's DB search
@@ -231,11 +231,11 @@ const APIScreen: React.FC = () => {
             <Modal visible={modal_active} animationType="slide" onRequestClose={() => {set_modal_active(false)}}>
                 <View style={styles.container}>
                     <Text style={styles.text}>How many servings?</Text>
-                    <Text>{savedFood.name}</Text>
-                    <Text>Calories: {savedFood.calories}</Text>
-                    <Text>Protein: {savedFood.proteins}</Text>
-                    <Text>Fat: {savedFood.fats}</Text>
-                    <Text>Carbs: {savedFood.carbs}</Text>
+                    <Text style={styles.title}>{savedFood.name}</Text>
+                    <Text style={styles.text}>Calories: {savedFood.calories}</Text>
+                    <Text style={styles.text}>Protein: {savedFood.proteins}</Text>
+                    <Text style={styles.text}>Fat: {savedFood.fats}</Text>
+                    <Text style={styles.text}>Carbs: {savedFood.carbs}</Text>
                     <TextInput
                         // label="Serving Size"
                         style={styles.input}
