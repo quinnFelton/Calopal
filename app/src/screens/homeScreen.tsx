@@ -14,7 +14,7 @@ export default function HomeScreen() {
     <SafeAreaProvider>
       <SafeAreaView style={styles.container} edges={['left','right']}>
         <ImageBackground source={require('../../../assets/images/home_bg.jpg')} contentFit="cover" style={styles.backgroundImage}>
-          <CatAnim source = {require('../../../assets/images/Cat Assets/cat_sit_neutral.png')} size = {140}/>
+          <CatAnim size = {140}/>
         </ImageBackground>
         <Button mode='contained'
           onPress={() => navigation.navigate('CosmeticScreen')}

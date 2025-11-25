@@ -8,11 +8,14 @@ const { width, height } = Dimensions.get('window');
 
 
 //Speed is measured as milisecond for the purposes of random calcs and timeout purposes.
-export default function CatAnim({source, size = 100, speed = 1000}) {
+export default function CatAnim({size = 100, speed = 1000}) {
     const x = useSharedValue(width / 2);
     const y = useSharedValue(height / 2);
+    const isMove = useSharedValue(false);
     const tabBarHeight = useBottomTabBarHeight();
 
+    const catState = 'sad';
+    
     const animStyle = useAnimatedStyle(() => {
         return {
             transform: [{translateX: x.value - size / 2}, {translateY: y.value - size / 2}],
@@ -53,7 +56,18 @@ export default function CatAnim({source, size = 100, speed = 1000}) {
         return () => clearTimeout(timeout);
     });
 
+    let tempSource = require('../../../assets/images/Cat Assets/cat_sit_neutral.png');
+    if (catState == 'happy') {
+        tempSource =  require('../../../assets/images/Cat Assets/cat_sit_happy.png')
+    } else if (catState == 'veryHappy') {
+        tempSource = require('../../../assets/images/Cat Assets/cat_sit_very_happy.png')
+    } else if (catState == 'angry') {
+        tempSource = require('../../../assets/images/Cat Assets/cat_sit_angry.png')
+    } else if (catState == 'sad') {
+        tempSource = require('../../../assets/images/Cat Assets/cat_sit_sad.png')
+    }
+
     return (
-        <Animated.Image source={source} style={[{ position: "absolute", width: size, height: size, resizeMode:'none'}, animStyle]}/>
+        <Animated.Image source={tempSource} style={[{ position: "absolute", width: size, height: size, resizeMode:'none'}, animStyle]}/>
     );
 }
