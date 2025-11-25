@@ -43,6 +43,20 @@
       "when": 1764040200607,
       "tag": "0005_loud_overlord",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "6",
+      "when": 1764040717637,
+      "tag": "0006_curious_george_stacy",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "6",
+      "when": 1764041950611,
+      "tag": "0007_kind_the_watchers",
+      "breakpoints": true
     }
   ]
 }

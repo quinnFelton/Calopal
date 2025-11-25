@@ -29,10 +29,10 @@ export const meals = sqliteTable('meals', {
   name: text('name').notNull(),
   
   // Float fields for macros
-  calories: float('calories').notNull(),
-  carbs: float('carbs').notNull(),
-  proteins: float('proteins').notNull(),
-  fats: float('fats').notNull(),
+  calories: float('calories').notNull().default(0.0),
+  carbs: float('carbs').notNull().default(0.0),
+  proteins: float('proteins').notNull().default(0.0),
+  fats: float('fats').notNull().default(0.0),
   
   // DATETIME field - SQLite stored as ISO string
   date: text('consumed_at').default(sql`(CURRENT_TIMESTAMP)`),
@@ -88,6 +88,7 @@ export const userDetails = sqliteTable('user_details', {
   goalsCompleted: integer('goals_completed').notNull().default(0),
   petState: integer('pet_state').notNull().default(0),
   lastLoggedIn: text('last_logged_in').default(sql`(CURRENT_TIMESTAMP)`),
+  onboardingCompleted: integer('onboarding_completed', { mode: 'boolean' }).notNull().default(false),
 });
 
 // Export Task to use as an interface in app

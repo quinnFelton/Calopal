@@ -7,6 +7,8 @@ import m0002 from './0002_first_galactus.sql';
 import m0003 from './0003_neat_blob.sql';
 import m0004 from './0004_flippant_vermin.sql';
 import m0005 from './0005_loud_overlord.sql';
+import m0006 from './0006_curious_george_stacy.sql';
+import m0007 from './0007_kind_the_watchers.sql';
 
   export default {
     journal,
@@ -16,7 +18,9 @@ m0001,
 m0002,
 m0003,
 m0004,
-m0005
+m0005,
+m0006,
+m0007
     }
   }
   
