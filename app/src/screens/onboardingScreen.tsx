@@ -1,4 +1,3 @@
-import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { SafeAreaView, ScrollView, Text, View } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
@@ -7,7 +6,6 @@ import { useOnboarding } from '../hooks/onboardingHook';
 import { styles } from '../style/styles';
 
 export default function OnboardingScreen() {
-  const navigation = useNavigation();
   const { initializeUser, completeOnboarding } = useOnboarding();
   const { addGoal } = useGoals();
 
@@ -44,12 +42,8 @@ export default function OnboardingScreen() {
 
       // Mark onboarding complete
       await completeOnboarding();
-      
-      // Navigate to home screen
-      navigation.reset({
-        index: 0,
-        routes: [{ name: 'NavBar' as never }],
-      });
+      // The parent component (Index) will automatically switch to showing NavBar
+      // when it detects that onboardingCompleted has changed to true
     } catch (e) {
       alert(`Error: ${(e as Error).message}`);
       setLoading(false);
