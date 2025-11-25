@@ -82,6 +82,14 @@ export const cosmetics = sqliteTable('cosmetics', {
   anchoredToPet: integer('anchored_to_pet', { mode: 'boolean' }).notNull().default(false),
 });
 
+export const userDetails = sqliteTable('user_details', {
+  userName: text('user_name').notNull(),
+  petName: text('pet_name').notNull(),
+  goalsCompleted: integer('goals_completed').notNull().default(0),
+  petState: integer('pet_state').notNull().default(0),
+  lastLoggedIn: text('last_logged_in').default(sql`(CURRENT_TIMESTAMP)`),
+});
+
 // Export Task to use as an interface in app
 
 //foods
@@ -103,3 +111,8 @@ export type InsertGoal = typeof goals.$inferInsert;
 //cosmetics
 export type Cosmetic = typeof cosmetics.$inferSelect;
 export type InsertCosmetic = typeof cosmetics.$inferInsert;
+
+//userDetails
+export type UserDetail = typeof userDetails.$inferSelect;
+export type InsertUserDetail = typeof userDetails.$inferInsert;
+
