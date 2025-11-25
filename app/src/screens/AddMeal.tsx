@@ -1,22 +1,44 @@
-import React, { useState, useEffect } from "react";
-import { TouchableOpacity, View, SafeAreaView, FlatList, ScrollView } from "react-native";
+import React, { useState } from "react";
+import { ActivityIndicator, SafeAreaView, ScrollView, View } from "react-native";
+import { Button, Text, TextInput } from 'react-native-paper';
 import { styles } from "../style/styles";
-import { Text, TextInput, Button, ActivityIndicator, List} from 'react-native-paper';
 
-import { useMeals } from "../hooks/mealHook"
 import { useGlobal } from "../context/GlobalContext";
+import { useMeals } from "../hooks/mealHook";
 
 
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
 export default function AddMeal() {
-    const { items, loading, error, load, createMeal, addMealComponent, getMealDetails} = useMeals();
+    const { items, error, load, createMeal, addMealComponent, getMealDetails, getFoodsForMeal} = useMeals();
     const { ActiveFoodID, setActiveFoodID } = useGlobal();
     const [query, setQuery] = useState('');
-    const [food, setFood] = useState(items);
+    const [mealComponents, setMealComponents] = useState<any[]>([]);
+    const [componentsLoading, setComponentsLoading] = useState(false);
     const navigation = useNavigation();
 
-    const handleSearch = async () => {
+    // Load meal components whenever screen is viewed
+    useFocusEffect(
+        React.useCallback(() => {
+            const loadComponents = async () => {
+                if (ActiveFoodID) {
+                    setComponentsLoading(true);
+                    try {
+                        const components = await getFoodsForMeal(Number(ActiveFoodID));
+                        setMealComponents(components || []);
+                    } catch (err) {
+                        console.error('Error loading meal components:', err);
+                        setMealComponents([]);
+                    } finally {
+                        setComponentsLoading(false);
+                    }
+                }
+            };
+            loadComponents();
+        }, [ActiveFoodID, getFoodsForMeal])
+    );
+
+    const confirm = async () => {
         const NewMeal = await createMeal({
             name: query,
         });
@@ -26,6 +48,10 @@ export default function AddMeal() {
 
         // set global veriable
         setActiveFoodID(NewMeal.id);
+
+    };
+
+    const handleSearch = async () => {
         navigation.navigate('foodList');
     };
 
@@ -49,6 +75,10 @@ export default function AddMeal() {
                 style={styles.input}
             />
 
+            <Button mode="contained" onPress={confirm} style={styles.button}>
+                Confirm Name
+            </Button>
+
             <Button mode="contained" onPress={handleSearch} style={styles.button}>
                 Add Item
             </Button>
@@ -57,28 +87,27 @@ export default function AddMeal() {
                 Current Items
             </Text>
 
-            {/* display items in meal
 
-
-            {loading ? (
-                <ActivityIndicator animating={true} styles={styles.loader} />
+            {componentsLoading ? (
+                <ActivityIndicator animating={true} style={styles.loader} />
                 ) : (
                     <ScrollView contentContainerStyle ={{ paddingVertical: 8}}>
-                        {foods.map((food, index) => (
-                            <TouchableOpacity key={index} onPress={() => handleSubmit(food)}>
-                                <View style={styles.card}>
-                                    <Text style={styles.title}> {food.name}</Text>
-                                    <Text style={styles.text}>Calories: {food.calories ?? "N/A"} cal </Text>
-                                    <Text style={styles.text}>Proteins: {food.proteins ?? "N/A"} g</Text>
-                                    <Text style={styles.text}>Fats: {food.fats ?? "N/A"} g</Text>
-                                    <Text style={styles.text}>Carbs: {food.carbs ?? "N/A"} g</Text>
+                        {mealComponents && mealComponents.length > 0 ? (
+                            mealComponents.map((component, index) => (
+                                <View key={index} style={styles.card}>
+                                    <Text style={styles.title}>{component.food?.name || 'Unknown Food'}</Text>
+                                    <Text style={styles.text}>Quantity: {component.quantity}</Text>
                                 </View>
-                            </TouchableOpacity>
-                        ))}
+                            ))
+                        ) : (
+                            <Text style={[styles.text, { textAlign: 'center', marginVertical: 12}]}>
+                                No items added yet
+                            </Text>
+                        )}
                     </ScrollView>
             )}
 
-            */}
+            
 
             <Button mode="contained" onPress={handleDone} style={styles.button}>
                 Done
