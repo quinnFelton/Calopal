@@ -5,6 +5,7 @@ import { Image } from 'react-native';
 import APIScreen from "./src/screens/apiScreen";
 import FoodDriver from "./src/screens/foodDriver";
 import FoodList from "./src/screens/foodList";
+import MealList from "./src/screens/mealList";
 import GoalScreen from "./src/screens/goalScreen";
 import HomeScreen from "./src/screens/homeScreen";
 import CosmeticScreen from "./src/screens/CosmeticScreen"
@@ -56,7 +57,7 @@ function NavBar() {
               }}/>
             <Tab.Screen
               name="Input"
-              component = {FoodList}
+              component = {MealList}
               options={{
                 tabBarIcon: ({size,focused,color}) => {
                   return (
@@ -93,9 +94,10 @@ export default function Index() {
             />
 
             <Stack.Group screenOptions= {{presentation: 'modal'}}>
-                <Stack.Screen name='apiScreen' component={APIScreen} />
-                <Stack.Screen name='foodDriver' component={FoodDriver}/>
-                <Stack.Screen name='CosmeticScreen' component={CosmeticScreen}/>
+                <Stack.Screen name='apiScreen' component={APIScreen} options={{ headerShown: false }}/>
+                <Stack.Screen name='foodDriver' component={FoodDriver} options={{ headerShown: false }}/>
+                <Stack.Screen name='CosmeticScreen' component={CosmeticScreen} options={{ headerShown: false }}/>
+                <Stack.Screen name='foodList' component={FoodList} options={{ headerShown: false }}/>
             </Stack.Group>
         </Stack.Navigator>
     );
