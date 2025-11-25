@@ -9,7 +9,7 @@ import MealList from "./src/screens/mealList";
 import GoalScreen from "./src/screens/goalScreen";
 import HomeScreen from "./src/screens/homeScreen";
 import CosmeticScreen from "./src/screens/CosmeticScreen"
-import TestCosmetics from "./src/screens/TestCosmetics";
+import AddMeal from "./src/screens/AddMeal";
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -66,10 +66,10 @@ function NavBar() {
                   );
                 },
               }}/>
-          {/*
+
           <Tab.Screen
             name="Test"
-            component = {TestCosmetics}
+            component = {AddMeal}
             options={{
               tabBarIcon: ({size,focused,color}) => {
                 return (
@@ -78,7 +78,7 @@ function NavBar() {
                 );
               },
             }}/>
-            */}
+
           </Tab.Navigator>
     );
 }
@@ -98,6 +98,7 @@ export default function Index() {
                 <Stack.Screen name='foodDriver' component={FoodDriver} options={{ headerShown: false }}/>
                 <Stack.Screen name='CosmeticScreen' component={CosmeticScreen} options={{ headerShown: false }}/>
                 <Stack.Screen name='foodList' component={FoodList} options={{ headerShown: false }}/>
+                <Stack.Screen name='mealList' component={MealList} options={{ headerShown: false }}/>
             </Stack.Group>
         </Stack.Navigator>
     );
