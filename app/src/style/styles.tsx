@@ -1,5 +1,5 @@
-import { StatusBar, StyleSheet } from "react-native";
-import { Dimensions } from 'react-native';
+import { Dimensions, StatusBar, StyleSheet } from "react-native";
+
 
 const { width } = Dimensions.get('window');
 
