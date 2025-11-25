@@ -5,6 +5,7 @@ import { TextInput, Button, ActivityIndicator } from 'react-native-paper';
 import { drizzle } from 'drizzle-orm/expo-sqlite';
 import { foods, meals } from '../db/schema';
 import { NewFoodInput, useFoods } from '../hooks/foodHook';
+import { useMeals } from '../hooks/mealHook';
 
 interface Nutrient {
   nutrientName: string;
@@ -46,8 +47,10 @@ const APIScreen: React.FC = () => {
 
 
     // For servings
+    const { mItems, mLoading, mError, mLoad, createMeal, addMealComponent } = useMeals();
     const [modal_active, set_modal_active] = useState(false);
     const [serving, setServing] = useState('');
+    // This is for making sure user input isn't dirty.
     const handleNumberChange = (text) => {
         // Basic validation to allow numbers and a single decimal point
         const regex = /^\d*\.?\d*$/;
@@ -57,6 +60,7 @@ const APIScreen: React.FC = () => {
     };
 
     // Database stuff
+    // For Food boxes
     const handleSubmit = async (food) => {
         console.log(`
             Food: ${food.name}
@@ -109,6 +113,12 @@ const APIScreen: React.FC = () => {
         set_modal_active(true);
     };
 
+    // For Adding meals to DB
+    const handleMeals = async (servingMultiplier) => {
+        set_modal_active(false);
+    }
+
+    // For USDA's DB search
     const handleSearch = async () => {
         if(!query.trim()) return;
         setLoading(true);
@@ -215,7 +225,7 @@ const APIScreen: React.FC = () => {
                         keyboardType="numeric" // Displays a numeric keyboard
                         placeholder="Number of servings"
                     />
-                    <Button style={styles.button} onPress={()=>set_modal_active(false)}>
+                    <Button style={styles.button} onPress={()=>handleMeals()}>
                             Finish
                     </Button>
                 </View>
