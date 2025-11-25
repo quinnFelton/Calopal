@@ -13,9 +13,10 @@ export default function mealList() {
     // const { items, loading, error, searchFoods, refresh, addFood } = useFoods(); OLD
     const { items, loading, error, createMeal, addMealComponent,
             recalcMealMacros, getMealDetails, getMealById,
-            getFoodsForMeal, addComponentAndRecalc } = useMeals();
+            getFoodsForMeal, addComponentAndRecalc, searchMeals } = useMeals();
     const [query, setQuery] = useState('');
     const [foods, setFoods] = useState(items);
+    const [meals, setMeals] = useState(items);
     const navigation = useNavigation();
 
     const handleSubmit = async (food) => {
@@ -35,15 +36,15 @@ export default function mealList() {
     };
 
     useEffect(() => {
-        if(!query)  setFoods(items.slice(1,10));
+        if(!query)  setMeals(items.slice(0,10));
     }, [items, query]);
 
     const handleSearch = async () => {
         if (!query.trim()){
-            setFoods(items.slice(0,10));
+            setMeals(items.slice(0,10));
             return;
         }
-        const results = await searchFoods(query);
+        const results = await searchMeals(query);
         setFoods(results);
     };
 
@@ -54,6 +55,30 @@ export default function mealList() {
                     Add Meal
                 </Button>
             </View>
+
+            <Text variant='headlineMedium' style={[styles.title, { textAlign: 'center', marginVertical: 12}]}>
+                Previous Eaten Meals
+            </Text>
+            {/* TODO: Make this work with getMeals. */}
+            {loading ? (
+                <ActivityIndicator animating={true} styles={styles.loader} />
+                ) : (
+                <ScrollView contentContainerStyle ={{ paddingVertical: 8}}>
+                    {meals.map((meal, index) => (
+                        <TouchableOpacity key={index} onPress={() => {}}>
+                            <View style={styles.card}>
+                                <Text style={styles.title}>{meal.name}</Text>
+                            </View>
+                        </TouchableOpacity>
+                    ))}
+                </ScrollView>
+            )}
+
+            {error && (
+                <Text style={styles.errorMessage}>
+                    Error: {error.message}
+                </Text>
+            )}
         </SafeAreaView>
     );
 }
