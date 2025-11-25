@@ -6,6 +6,9 @@ import { drizzle } from 'drizzle-orm/expo-sqlite';
 import { foods, meals } from '../db/schema';
 import { NewFoodInput, useFoods } from '../hooks/foodHook';
 import { useMeals } from '../hooks/mealHook';
+import { useGlobal } from "../context/GlobalContext";
+import { useNavigation } from '@react-navigation/native';
+
 
 interface Nutrient {
   nutrientName: string;
@@ -30,9 +33,14 @@ interface ParsedFood {
 
 const APIScreen: React.FC = () => {
     // For Database
+    const navigation = useNavigation();
+
     const [query, setQuery] = useState('');
     const [foods, setFoods] = useState<ParsedFood[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
+    const [foodID, setFoodID] = useState('');
+    const { ActiveFoodID, setActiveFoodID } = useGlobal();
+
 
     // For Foods
     const { items, uFLoading, error, refresh, addFood, searchFoods } = useFoods();
@@ -47,7 +55,7 @@ const APIScreen: React.FC = () => {
 
 
     // For servings
-    const { mItems, mLoading, mError, mLoad, createMeal, addMealComponent } = useMeals();
+    const { mItems, mLoading, mError, mLoad, createMeal, addMealComponent, addComponentAndRecalc, getMealById, getMealDetails, getFoodsForMeal } = useMeals();
     const [modal_active, set_modal_active] = useState(false);
     const [serving, setServing] = useState('');
     // This is for making sure user input isn't dirty.
@@ -92,7 +100,8 @@ const APIScreen: React.FC = () => {
         // Step 2: Add Food
         setLoading(true);
         try {
-            await addFood(clickedFood);
+            const ID = await addFood(clickedFood);
+            setFoodID(ID.id);
         } catch(error) {
             console.error("Adding Food to db error", error)
         } finally {
@@ -100,6 +109,7 @@ const APIScreen: React.FC = () => {
         }
         // Step 3: ???
         // Step 4: Profit
+
         setLoading(true);
         try {
             const matches = await searchFoods(food.name);
@@ -115,7 +125,16 @@ const APIScreen: React.FC = () => {
 
     // For Adding meals to DB
     const handleMeals = async (servingMultiplier) => {
+        const added = await addComponentAndRecalc( ActiveFoodID, foodID, serving );
+        console.log("ActiveFoodID", ActiveFoodID);
+        console.log("foodID", foodID);
+        console.log("serving", serving);
+
+        if(added) console.log('meal component successfuly added', getFoodsForMeal(ActiveFoodID));
+        else console.log('error adding meal component', error);
+        setServing("");
         set_modal_active(false);
+        navigation.navigate('foodList');
     }
 
     // For USDA's DB search

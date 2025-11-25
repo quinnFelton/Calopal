@@ -72,6 +72,10 @@ export default function mealList() {
                         <TouchableOpacity key={index} onPress={() => {}}>
                             <View style={styles.card}>
                                 <Text style={styles.title}>{meal.name}</Text>
+                                <Text style={styles.text}>Calories: {meal.calories ?? "N/A"} cal </Text>
+                                <Text style={styles.text}>Protein: {meal.proteins ?? "N/A"} g</Text>
+                                <Text style={styles.text}>Fat: {meal.fats ?? "N/A"} g</Text>
+                                <Text style={styles.text}>Carbs: {meal.carbs ?? "N/A"} g</Text>
                             </View>
                         </TouchableOpacity>
                     ))}
