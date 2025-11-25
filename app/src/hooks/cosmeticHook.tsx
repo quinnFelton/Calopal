@@ -99,16 +99,7 @@ export function useCosmetics() {
         scale: normalized.scale,
         imagePath: normalized.imagePath,
         anchoredToPet: normalized.anchoredToPet,
-      } as InsertCosmetic).run?.() ?? db.insert(cosmetics).values({
-          name: normalized.name,
-          visible: normalized.visible,
-          x_pos: normalized.x_pos,
-          y_pos: normalized.y_pos,
-          angle: normalized.angle,
-          scale: normalized.scale,
-          imagePath: normalized.imagePath,
-          anchoredToPet: normalized.anchoredToPet,
-        } as InsertCosmetic));
+      } as InsertCosmetic));
 
       await load();
       return null;

@@ -66,7 +66,7 @@ export const goals = sqliteTable('goals', {
 
 export const cosmetics = sqliteTable('cosmetics', {
   // ID for cosmetic
-  cosmeticId: integer('id').notNull(),
+  cosmeticId: integer('id').primaryKey({ autoIncrement: true }),
   // Text field
   name: text('name').notNull(),
   // Visibility on home screen
