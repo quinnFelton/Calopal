@@ -50,6 +50,10 @@ export default function mealList() {
 
     return(
         <SafeAreaView style={styles.container}>
+            <Text variant='headlineMedium' style={[styles.title, { textAlign: 'center', marginVertical: 12}]}>
+                Add Meal
+            </Text>
+
             <View style={styles.row}>
                 <Button mode="contained" onPress={() => navigation.navigate('foodList')} style={styles.searchButton}>
                     Add Meal
