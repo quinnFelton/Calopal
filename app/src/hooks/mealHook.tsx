@@ -242,6 +242,27 @@ export function useMeals() {
     [addMealComponent, recalcMealMacros]
   );
 
+  const searchMeals = useCallback(
+      async (term: string): Promise<Meal[]> => {
+        const q = term.trim();
+        if (!q) return [];
+        const rows =
+          (await db
+            .select()
+            .from(meals)
+            .where(sql`lower(${meals.name}) LIKE lower('%' || ${q} || '%')`)
+            .orderBy(sql`${meals.date} DESC`)
+            .all?.()) ??
+          (await db
+            .select()
+            .from(meals)
+            .where(sql`lower(${meals.name}) LIKE lower('%' || ${q} || '%')`)
+            .orderBy(sql`${meals.date} DESC`));
+        return rows as Meal[];
+      },
+      [db]
+    );
+
   return {
     items,
     loading,
@@ -254,5 +275,6 @@ export function useMeals() {
     getMealById,
     getFoodsForMeal,
     addComponentAndRecalc,
+    searchMeals,
   } as const;
 }
