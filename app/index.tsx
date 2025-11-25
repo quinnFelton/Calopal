@@ -1,6 +1,7 @@
 //import { useState } from "react";
 //import { styles } from "./styles";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { GlobalProvider } from "./src/context/GlobalContext";
 import { Image } from 'react-native';
 import APIScreen from "./src/screens/apiScreen";
 import FoodDriver from "./src/screens/foodDriver";
@@ -10,6 +11,7 @@ import GoalScreen from "./src/screens/goalScreen";
 import HomeScreen from "./src/screens/homeScreen";
 import CosmeticScreen from "./src/screens/CosmeticScreen"
 import AddMeal from "./src/screens/AddMeal";
+
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -66,7 +68,7 @@ function NavBar() {
                   );
                 },
               }}/>
-
+          {/*
           <Tab.Screen
             name="Test"
             component = {AddMeal}
@@ -78,7 +80,7 @@ function NavBar() {
                 );
               },
             }}/>
-
+            */}
           </Tab.Navigator>
     );
 }
@@ -86,20 +88,23 @@ function NavBar() {
 
 export default function Index() {
     return (
-        <Stack.Navigator>
-            <Stack.Screen
-                name='NavBar'
-                component={NavBar}
-                options={{headerShown: false}}
-            />
+        <GlobalProvider>
+            <Stack.Navigator>
+                <Stack.Screen
+                    name='NavBar'
+                    component={NavBar}
+                    options={{headerShown: false}}
+                />
 
-            <Stack.Group screenOptions= {{presentation: 'modal'}}>
-                <Stack.Screen name='apiScreen' component={APIScreen} options={{ headerShown: false }}/>
-                <Stack.Screen name='foodDriver' component={FoodDriver} options={{ headerShown: false }}/>
-                <Stack.Screen name='CosmeticScreen' component={CosmeticScreen} options={{ headerShown: false }}/>
-                <Stack.Screen name='foodList' component={FoodList} options={{ headerShown: false }}/>
-                <Stack.Screen name='mealList' component={MealList} options={{ headerShown: false }}/>
-            </Stack.Group>
-        </Stack.Navigator>
+                <Stack.Group screenOptions= {{presentation: 'modal'}}>
+                    <Stack.Screen name='apiScreen' component={APIScreen} options={{ headerShown: false }}/>
+                    <Stack.Screen name='foodDriver' component={FoodDriver} options={{ headerShown: false }}/>
+                    <Stack.Screen name='CosmeticScreen' component={CosmeticScreen} options={{ headerShown: false }}/>
+                    <Stack.Screen name='foodList' component={FoodList} options={{ headerShown: false }}/>
+                    <Stack.Screen name='mealList' component={MealList} options={{ headerShown: false }}/>
+                    <Stack.Screen name='addMeal' component={AddMeal} options={{ headerShown: false }}/>
+                </Stack.Group>
+            </Stack.Navigator>
+        </GlobalProvider>
     );
 }

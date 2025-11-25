@@ -55,7 +55,7 @@ export default function mealList() {
             </Text>
 
             <View style={styles.row}>
-                <Button mode="contained" onPress={() => navigation.navigate('foodList')} style={styles.searchButton}>
+                <Button mode="contained" onPress={() => navigation.navigate('addMeal')} style={styles.searchButton}>
                     Add Meal
                 </Button>
             </View>
