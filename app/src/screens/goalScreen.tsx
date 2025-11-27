@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Modal, Pressable, SafeAreaView, Text, View, Image } from "react-native";
+import { Modal, Pressable, SafeAreaView, Text, View, Image, ScrollView } from "react-native";
 import { Button, TextInput } from 'react-native-paper';
 import { styles } from "../style/styles";
 
@@ -208,6 +208,7 @@ export default function goalScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
+      <ScrollView>
       <View style={styles.card}>
         <Text variant='headlineMedium' style={[styles.title, { textAlign: 'center', marginVertical: 12}]}>
                Weekly Report
@@ -286,6 +287,7 @@ export default function goalScreen() {
       <Button style={styles.button} onPress={()=>set_modal_active(true)}>
         Modify Goals
       </Button>
+      </ScrollView>
     </SafeAreaView>
   )
 }
