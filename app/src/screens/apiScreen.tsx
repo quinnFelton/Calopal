@@ -134,7 +134,9 @@ const APIScreen: React.FC = () => {
         else console.log('error adding meal component', error);
         setServing("");
         set_modal_active(false);
-        navigation.navigate('addMeal');
+        //navigation.navigate('addMeal');
+        navigation.goBack();
+        navigation.goBack();
     }
 
     // For USDA's DB search
