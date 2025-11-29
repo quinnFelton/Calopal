@@ -63,9 +63,9 @@ export default function foodDriver() {
         setFoodProtein("");
         setFoodCarbs("");
         setFoodFat("");
-        //navigation.navigate('addMeal');
-        navigation.goBack();
-        navigation.goBack();
+        navigation.navigate('addMeal');
+        //navigation.goBack();
+        //navigation.goBack();
     }
 
     return (

@@ -58,8 +58,8 @@ export default function AddMeal() {
     const handleDone = async () => {
         // reset global variable
         setActiveFoodID('');
-        //navigation.navigate('mealList');
-        navigation.goBack();
+        navigation.navigate('mealList');
+        //navigation.goBack();
     };
 
     return(
