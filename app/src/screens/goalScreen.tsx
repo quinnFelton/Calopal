@@ -270,7 +270,7 @@ export default function goalScreen() {
       emptyProgress();
     } else {
       console.log(`goalScreen: ${items.length} item(s) found.`);
-      todayGoals = getGoalsFromDay(today);
+      todayGoals = getGoalsFromDay(items, today);
       if (todayGoals.length === 0) {
         console.log("goalScreen: No items matching today.");
         emptyProgress();
