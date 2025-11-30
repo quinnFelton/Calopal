@@ -46,8 +46,10 @@ export default function OnboardingScreen() {
       // when it detects that onboardingCompleted has changed to true
     } catch (e) {
       alert(`Error: ${(e as Error).message}`);
+    } finally {
       setLoading(false);
     }
+
   };
 
   return (

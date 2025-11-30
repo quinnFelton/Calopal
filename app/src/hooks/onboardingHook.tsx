@@ -161,3 +161,40 @@ export function useOnboarding() {
     addGoalsCompleted,
   };
 }
+
+export function useOnboardingStatus() {
+  const db = useDrizzle();
+  const [isLoading, setIsLoading] = useState(true);
+  const [status, setStatus] = useState<{ onboardingCompleted: boolean | null }>({ onboardingCompleted: null });
+  const [error, setError] = useState<Error | null>(null);
+
+  const load = useCallback(async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const rows =
+        (await db.select().from(userDetails).limit(1).all?.()) ??
+        (await db.select().from(userDetails).limit(1));
+      const row = Array.isArray(rows) ? (rows[0] as any) : (rows as any) ?? null;
+      const completed = row ? Boolean(row.onboardingCompleted) : null;
+      setStatus({ onboardingCompleted: completed });
+      setError(null);
+    } catch (e) {
+      setStatus({ onboardingCompleted: null });
+      setError(e as Error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [db]);
+
+  useEffect(() => {
+    load();
+  }, [load]);
+
+  return {
+    isLoading,
+    status,
+    error,
+    refresh: load,
+  };
+}

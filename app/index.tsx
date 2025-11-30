@@ -1,19 +1,23 @@
 //import { useState } from "react";
 //import { styles } from "./styles";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { GlobalProvider } from "./src/context/GlobalContext";
 import { Image } from 'react-native';
+import { GlobalProvider } from "./src/context/GlobalContext";
+import { useOnboardingStatus } from "./src/hooks/onboardingHook";
+import AddMeal from "./src/screens/AddMeal";
 import APIScreen from "./src/screens/apiScreen";
+import CosmeticScreen from "./src/screens/CosmeticScreen";
 import FoodDriver from "./src/screens/foodDriver";
 import FoodList from "./src/screens/foodList";
-import MealList from "./src/screens/mealList";
 import GoalScreen from "./src/screens/goalScreen";
 import HomeScreen from "./src/screens/homeScreen";
-import CosmeticScreen from "./src/screens/CosmeticScreen"
-import AddMeal from "./src/screens/AddMeal";
+import MealList from "./src/screens/mealList";
+import Onboarding from "./src/screens/onboardingScreen";
 
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import OnboardingScreen from "./src/screens/onboardingScreen";
+
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -68,10 +72,9 @@ function NavBar() {
                   );
                 },
               }}/>
-          {/*
           <Tab.Screen
             name="Test"
-            component = {AddMeal}
+            component = {Onboarding}
             options={{
               tabBarIcon: ({size,focused,color}) => {
                 return (
@@ -80,31 +83,45 @@ function NavBar() {
                 );
               },
             }}/>
-            */}
           </Tab.Navigator>
     );
 }
 
+function handleOnboardingScreen() {
+    console.log("Onboarding never done. Starting Onboarding.");
+      return <OnboardingScreen />;
+}
 
 export default function Index() {
-    return (
-        <GlobalProvider>
-            <Stack.Navigator>
-                <Stack.Screen
-                    name='NavBar'
-                    component={NavBar}
-                    options={{headerShown: false}}
-                />
+    const { isLoading, status, error, refresh } = useOnboardingStatus();
 
-                <Stack.Group screenOptions= {{presentation: 'modal'}}>
-                    <Stack.Screen name='apiScreen' component={APIScreen} options={{ headerShown: false }}/>
-                    <Stack.Screen name='foodDriver' component={FoodDriver} options={{ headerShown: false }}/>
-                    <Stack.Screen name='CosmeticScreen' component={CosmeticScreen} options={{ headerShown: false }}/>
-                    <Stack.Screen name='foodList' component={FoodList} options={{ headerShown: false }}/>
-                    <Stack.Screen name='mealList' component={MealList} options={{ headerShown: false }}/>
-                    <Stack.Screen name='addMeal' component={AddMeal} options={{ headerShown: false }}/>
-                </Stack.Group>
-            </Stack.Navigator>
+    /**
+     * Decide which screen to show based on onboarding status
+     * First: See if loading is done
+     * Second: If not loading, check if onboarding is completed
+     * If completed, show main screen
+     * If not completed, show onboarding screen
+     */
+    const onboardingNotCompleted = status.onboardingCompleted === null || !status.onboardingCompleted;
+    return (
+      <GlobalProvider>
+        <Stack.Navigator>
+                  <Stack.Screen
+                      name='NavBar'
+                      component={NavBar}
+                      options={{headerShown: false}}
+                  />
+
+                  <Stack.Group screenOptions= {{presentation: 'modal'}}>
+                      <Stack.Screen name='apiScreen' component={APIScreen} options={{ headerShown: false }}/>
+                      <Stack.Screen name='foodDriver' component={FoodDriver} options={{ headerShown: false }}/>
+                      <Stack.Screen name='CosmeticScreen' component={CosmeticScreen} options={{ headerShown: false }}/>
+                      <Stack.Screen name='foodList' component={FoodList} options={{ headerShown: false }}/>
+                      <Stack.Screen name='mealList' component={MealList} options={{ headerShown: false }}/>
+                      <Stack.Screen name='addMeal' component={AddMeal} options={{ headerShown: false }}/>
+                      <Stack.Screen name='Onboarding' component={Onboarding} options={{ headerShown: false }}/>
+                  </Stack.Group>
+              </Stack.Navigator>
         </GlobalProvider>
     );
 }
