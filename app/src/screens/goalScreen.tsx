@@ -224,8 +224,20 @@ export default function goalScreen() {
   const updateGoalTarget = async(new_target: number, macro: string) => {
     const db_goal = todayGoals.find(goal => goal.macroType === macro);
     const db_id = db_goal?.id;
+
+    let min_max = false;
+    if (macro === calories_name) {
+      minOrMax = !calories_overUnder;
+    } else if (macro === protein_name) {
+      minOrMax = !protein_overUnder;
+    } else if (macro === carbs_name) {
+      minOrMax = !carbs_overUnder;
+    } else if (macro === fats_name) {
+      minOrMax = !fat_overUnder;
+    }
+
     if (db_id != undefined) {
-      await updateGoal(db_id, {targetValue: new_target})
+      await updateGoal(db_id, {targetValue: new_target, minOrMax: min_max})
     } else {
       console.log(`goalScreen: could not find today's ${macro} goal`);
     }
