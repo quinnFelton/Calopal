@@ -2,10 +2,22 @@ import { useEffect, useState } from "react";
 import { Modal, Pressable, SafeAreaView, Text, View, Image, ScrollView } from "react-native";
 import { Button, TextInput } from 'react-native-paper';
 import { styles } from "../style/styles";
+import { useGoals } from "../hooks/goalHook";
+import { type Goal } from "../db/schema";
 
 import { useFoods } from "../hooks/foodHook";
 
-//Currently just placeholder information to verify that nav bar works. | 10/21/2025 | Vinh
+
+function sameDay(day_a: string, day_b: string): boolean {
+  // day_a and day_b must both be ISO timestamps
+  return (day_a.slice(0, 10) === day_b.slice(0, 10));
+}
+
+function getGoalsFromDay(items: Goal[], date: string): Goal[] {
+  return items.filter(item => {
+    return sameDay(date, item.createdAt);
+  });
+}
 
 function goalSuccess(value: number, goal: number, over_under: boolean) {
     if (over_under === true) {
@@ -140,7 +152,18 @@ function GoalInput({name, default_value, min_value, default_over_under, onChange
 }
 
 export default function goalScreen() {
-  const { items, loading, refresh } = useFoods();
+
+  const calories_name = "calories";
+  const carbs_name = "carbs";
+  const protein_name = "protein";
+  const fats_name = "fats";
+
+  const todayDate = new Date();
+  const today = todayDate.toISOString();
+  let todayGoals = [];
+
+  const { items, loading, error, refresh,
+    addGoal, updateGoal, deleteGoal, getCompletedGoals } = useGoals();
 
   const [calories, setCalories] = useState(500);
   const [protein, setProtein] = useState(10);
@@ -163,31 +186,88 @@ export default function goalScreen() {
   const [fat_modal, setFatModal] = useState(fat_goal);
   const [carbs_modal, setCarbsModal] = useState(carbs_goal);
 
+  function emptyProgress() {
+    setCalories(0);
+    setProtein(0);
+    setFat(0);
+    setCarbs(0);
+  }
+
+  function readGoals() {
+    emptyProgress();
+    for (const goal of todayGoals) {
+      // schema uses true for min while this module was originally designed
+      // with true for max. rather than refactor the whole module, a dirty
+      // negation allows functionality to be maintained without refactoring. it
+      // would probably be better to refactor, but it is too late in
+      // development for it to be worthwhile.
+      if (goal.macroType == calories_name) {
+        setCalories(goal.completedValue);
+        setCaloriesGoal(goal.targetValue);
+        setCaloriesOverUnder(!(goal.minOrMax));
+      } else if (goal.macroType == protein_name) {
+        setProtein(goal.completedValue);
+        setProteinGoal(goal.targetValue);
+        setProteinOverUnder(!(goal.minOrMax));
+      } else if (goal.macroType == carbs_name) {
+        setCarbs(goal.completedValue);
+        setCarbsGoal(goal.targetValue);
+        setCarbsOverUnder(!(goal.minOrMax));
+      } else if (goal.macroType == fats_name) {
+        setFat(goal.completedValue);
+        setFatGoal(goal.targetValue);
+        setFatOverUnder(!(goal.minOrMax));
+      }
+    }
+  }
+
+  const updateGoalTarget = async(new_target: number, macro: string) => {
+    const db_goal = todayGoals.find(goal => goal.macroType === macro);
+    const db_id = db_goal?.id;
+    if (db_id != undefined) {
+      await updateGoal(db_id, {targetValue: new_target})
+    } else {
+      console.log(`goalScreen: could not find today's ${macro} goal`);
+    }
+  }
+
+  const updateCaloriesTarget = async(new_target: number) => {
+    updateGoalTarget(new_target, calories_name);
+  }
+
+  const updateProteinTarget = async(new_target: number) => {
+    updateGoalTarget(new_target, protein_name);
+  }
+
+  const updateCarbsTarget = async(new_target: number) => {
+    updateGoalTarget(new_target, carbs_name);
+  }
+
+  const updateFatsTarget = async(new_target: number) => {
+    updateGoalTarget(new_target, fats_name);
+  }
+
   useEffect(() => {
       refresh();
   }, [refresh]);
 
   useEffect(() => {
-      if (!loading) {
-            if (items.length === 0) {
-                console.log("goalScreen: No items found.");
-                setCalories(0);
-                setProtein(0);
-                setFat(0);
-                setCarbs(0);
-            } else {
-                console.log(`goalScreen: ${items.length} items found.`);
-                let calorie_sum = 0, protein_sum = 0, fat_sum = 0, carbs_sum = 0;
-
-                // TODO: Find sums
-
-                setCalories(calorie_sum);
-                setProtein(protein_sum);
-                setFat(fat_sum);
-                setCarbs(carbs_sum);
-            }
+  if (!loading) {
+    if (items.length === 0) {
+      console.log("goalScreen: No items found.");
+      emptyProgress();
+    } else {
+      console.log(`goalScreen: ${items.length} item(s) found.`);
+      todayGoals = getGoalsFromDay(today);
+      if (todayGoals.length === 0) {
+        console.log("goalScreen: No items matching today.");
+        emptyProgress();
+      } else {
+        console.log(`goalScreen: ${todayGoals.length} item(s) found matching today.`)
+         readGoals();
       }
-  }, [loading, items]);
+    }
+  }}, [loading, items]);
 
   const updateGoals = () => {
       setCaloriesGoal(calories_modal);
@@ -195,6 +275,13 @@ export default function goalScreen() {
       setFatGoal(fat_modal);
       setCarbsGoal(carbs_modal);
       set_modal_active(false);
+      if (todayGoals.length > 0) {
+        console.log("goalScreen: Pushing target changes to db");
+        updateCaloriesTarget(calories_modal);
+        updateProteinTarget(protein_modal);
+        updateFatsTarget(fat_modal);
+        updateCarbsTarget(carbs_modal);
+      }
   }
   const weekStatus = {
     Monday: "✅",
