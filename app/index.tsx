@@ -72,6 +72,7 @@ function NavBar() {
                   );
                 },
               }}/>
+          {/*
           <Tab.Screen
             name="Test"
             component = {Onboarding}
@@ -83,6 +84,7 @@ function NavBar() {
                 );
               },
             }}/>
+        */}
           </Tab.Navigator>
     );
 }
@@ -90,6 +92,29 @@ function NavBar() {
 function handleOnboardingScreen() {
     console.log("Onboarding never done. Starting Onboarding.");
       return <OnboardingScreen />;
+}
+
+function handleMainAppScreen() {
+    console.log("Onboarding completed. Starting Main App.");
+      return (
+        <Stack.Navigator>
+          <Stack.Screen
+            name='NavBar'
+            component={NavBar}
+            options={{headerShown: false}}
+          />
+
+          <Stack.Group screenOptions= {{presentation: 'modal'}}>
+            <Stack.Screen name='apiScreen' component={APIScreen} options={{ headerShown: false }}/>
+            <Stack.Screen name='foodDriver' component={FoodDriver} options={{ headerShown: false }}/>
+            <Stack.Screen name='CosmeticScreen' component={CosmeticScreen} options={{ headerShown: false }}/>
+            <Stack.Screen name='foodList' component={FoodList} options={{ headerShown: false }}/>
+            <Stack.Screen name='mealList' component={MealList} options={{ headerShown: false }}/>
+            <Stack.Screen name='addMeal' component={AddMeal} options={{ headerShown: false }}/>
+            <Stack.Screen name='Onboarding' component={Onboarding} options={{ headerShown: false }}/>
+          </Stack.Group>
+        </Stack.Navigator>
+      );
 }
 
 export default function Index() {
@@ -102,26 +127,13 @@ export default function Index() {
      * If completed, show main screen
      * If not completed, show onboarding screen
      */
-    const onboardingNotCompleted = status.onboardingCompleted === null || !status.onboardingCompleted;
     return (
       <GlobalProvider>
-        <Stack.Navigator>
-                  <Stack.Screen
-                      name='NavBar'
-                      component={NavBar}
-                      options={{headerShown: false}}
-                  />
-
-                  <Stack.Group screenOptions= {{presentation: 'modal'}}>
-                      <Stack.Screen name='apiScreen' component={APIScreen} options={{ headerShown: false }}/>
-                      <Stack.Screen name='foodDriver' component={FoodDriver} options={{ headerShown: false }}/>
-                      <Stack.Screen name='CosmeticScreen' component={CosmeticScreen} options={{ headerShown: false }}/>
-                      <Stack.Screen name='foodList' component={FoodList} options={{ headerShown: false }}/>
-                      <Stack.Screen name='mealList' component={MealList} options={{ headerShown: false }}/>
-                      <Stack.Screen name='addMeal' component={AddMeal} options={{ headerShown: false }}/>
-                      <Stack.Screen name='Onboarding' component={Onboarding} options={{ headerShown: false }}/>
-                  </Stack.Group>
-              </Stack.Navigator>
-        </GlobalProvider>
+        {(status.onboardingCompleted === null || !status.onboardingCompleted) ? (
+          handleOnboardingScreen()
+        ) : (
+          handleMainAppScreen()
+        )}
+      </GlobalProvider>
     );
 }
