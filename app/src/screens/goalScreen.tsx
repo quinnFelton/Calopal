@@ -7,7 +7,6 @@ import { type Goal } from "../db/schema";
 
 import { useFoods } from "../hooks/foodHook";
 
-
 function sameDay(day_a: string, day_b: string): boolean {
   // day_a and day_b must both be ISO timestamps
   return (day_a.slice(0, 10) === day_b.slice(0, 10));
@@ -161,6 +160,17 @@ export default function goalScreen() {
   const todayDate = new Date();
   const today = todayDate.toISOString();
   let todayGoals = [];
+  let completedGoals = [];
+
+  const [weekStatus, setWeekStatus] = useState({
+    0: "☐",
+    1: "☐",
+    2: "☐",
+    3: "☐",
+    4: "☐",
+    5: "☐",
+    6: "☐",
+  });
 
   const { items, loading, error, refresh,
     addGoal, updateGoal, deleteGoal, getCompletedGoals } = useGoals();
@@ -259,6 +269,48 @@ export default function goalScreen() {
     updateGoalTarget(new_target, fats_name);
   }
 
+  const updateCompletedGoals = async() => {
+    completedGoals = await getCompletedGoals();
+  }
+
+  function updateWeekStatus() {
+    const progress_complete = "✅";
+    const progress_todo = "☐";
+    const progress_incomplete = "❌";
+
+    const dayOfTheWeek = todayDate.getDay();
+
+    setWeekStatus(old_status => {
+
+      const new_status = { ...old_status };
+
+      // Iterate through finished days
+      for (let i = 0; i < dayOfTheWeek; i++) {
+        const dayDelta = dayOfTheWeek - i;
+        const day = new Date(todayDate);
+        day.setDate(day.getDate() - dayDelta);
+        const dayGoals = getGoalsFromDay(completedGoals, day.toISOString());
+        if (dayGoals.length >= 3) {
+          new_status[i] = progress_complete;
+        } else {
+          new_status[i] = progress_incomplete;
+        }
+      }
+      // Progress for today
+      if (getGoalsFromDay(completedGoals, today).length >= 3) {
+        new_status[dayOfTheWeek] = progress_complete;
+      } else {
+        new_status[dayOfTheWeek] = progress_todo;
+      }
+      // Iterate through future days
+      for (let i = dayOfTheWeek + 1; i <= 6; i++) {
+        new_status[i] = progress_todo;
+      }
+
+      return new_status;
+    });
+  };
+
   useEffect(() => {
       refresh();
   }, [refresh]);
@@ -271,12 +323,14 @@ export default function goalScreen() {
     } else {
       console.log(`goalScreen: ${items.length} item(s) found.`);
       todayGoals = getGoalsFromDay(items, today);
+      updateCompletedGoals();
+      updateWeekStatus();
       if (todayGoals.length === 0) {
         console.log("goalScreen: No items matching today.");
         emptyProgress();
       } else {
         console.log(`goalScreen: ${todayGoals.length} item(s) found matching today.`)
-         readGoals();
+        readGoals();
       }
     }
   }}, [loading, items]);
@@ -295,15 +349,6 @@ export default function goalScreen() {
         updateCarbsTarget(carbs_modal);
       }
   }
-  const weekStatus = {
-    Monday: "✅",
-    Tuesday: "❌",
-    Wednesday: "✅",
-    Thursday: "✅",
-    Friday: "❌",
-    Saturday: "☐",
-    Sunday: "☐",
-  };
 
   return (
     <SafeAreaView style={styles.container}>
