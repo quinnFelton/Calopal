@@ -129,7 +129,7 @@ export default function Index() {
      */
     return (
       <GlobalProvider>
-        {(status.onboardingCompleted === null || !status.onboardingCompleted) ? (
+        {(status.onboardingCompleted === null) ? (
           handleOnboardingScreen(initializeUser, completeOnboarding)
         ) : (
           handleMainAppScreen()
