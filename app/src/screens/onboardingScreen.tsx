@@ -2,11 +2,9 @@ import React, { useState } from 'react';
 import { SafeAreaView, ScrollView, Text, View } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import { useGoals } from '../hooks/goalHook';
-import { useOnboarding } from '../hooks/onboardingHook';
 import { styles } from '../style/styles';
 
-export default function OnboardingScreen() {
-  const { initializeUser, completeOnboarding } = useOnboarding();
+export default function OnboardingScreen({ initializeUser, completeOnboarding }) {
   const { addGoal } = useGoals();
 
   const [userName, setUserName] = useState('');

@@ -3,7 +3,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Image } from 'react-native';
 import { GlobalProvider } from "./src/context/GlobalContext";
-import { useOnboardingStatus } from "./src/hooks/onboardingHook";
+import { useOnboarding } from "./src/hooks/onboardingHook";
 import AddMeal from "./src/screens/AddMeal";
 import APIScreen from "./src/screens/apiScreen";
 import CosmeticScreen from "./src/screens/CosmeticScreen";
@@ -89,9 +89,9 @@ function NavBar() {
     );
 }
 
-function handleOnboardingScreen() {
+function handleOnboardingScreen(initializeUser, completeOnboarding) {
     console.log("Onboarding never done. Starting Onboarding.");
-      return <OnboardingScreen />;
+      return <OnboardingScreen initializeUser={initializeUser} completeOnboarding={completeOnboarding}/>;
 }
 
 function handleMainAppScreen() {
@@ -118,7 +118,7 @@ function handleMainAppScreen() {
 }
 
 export default function Index() {
-    const { isLoading, status, error, refresh } = useOnboardingStatus();
+    const { loading, status, error, refresh, initializeUser, completeOnboarding } = useOnboarding();
 
     /**
      * Decide which screen to show based on onboarding status
@@ -130,7 +130,7 @@ export default function Index() {
     return (
       <GlobalProvider>
         {(status.onboardingCompleted === null || !status.onboardingCompleted) ? (
-          handleOnboardingScreen()
+          handleOnboardingScreen(initializeUser, completeOnboarding)
         ) : (
           handleMainAppScreen()
         )}
