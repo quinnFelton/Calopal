@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useDrizzle } from '../db/drizzle';
 import { userDetails, type InsertUserDetail, type UserDetail } from '../db/schema';
 
-export function useOnboarding(f) {
+export function useOnboarding() {
   const db = useDrizzle();
   const [user, setUser] = useState<UserDetail | null>(null);
   const [loading, setLoading] = useState(true);
