@@ -63,7 +63,11 @@ export default function AddMeal() {
         // reset global veriable
         await addMealToGoals(Number(ActiveFoodID));
         setActiveFoodID('');
-        navigation.navigate('NavBar');
+//         navigation.navigate('NavBar');
+        navigation.reset({
+            index: 0,
+            routes: [{ name: 'NavBar' }],
+        });
     };
 
     return(
