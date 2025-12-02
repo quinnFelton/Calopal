@@ -1,11 +1,11 @@
-import { useState } from "react";
-import { Modal, View, SafeAreaView } from "react-native";
-import { styles } from "../style/styles";
-import { TextInput, Button, Text } from 'react-native-paper';
-import { useFoods } from "../hooks/foodHook"
 import { useNavigation } from '@react-navigation/native';
+import { useState } from "react";
+import { Modal, SafeAreaView, View } from "react-native";
+import { Button, Text, TextInput } from 'react-native-paper';
 import { useGlobal } from "../context/GlobalContext";
+import { useFoods } from "../hooks/foodHook";
 import { useMeals } from '../hooks/mealHook';
+import { styles } from "../style/styles";
 
 export default function foodDriver() {
     const { mItems, mLoading, mError, mLoad, createMeal, addMealComponent, addComponentAndRecalc, getMealById, getMealDetails, getFoodsForMeal } = useMeals();
@@ -63,9 +63,9 @@ export default function foodDriver() {
         setFoodProtein("");
         setFoodCarbs("");
         setFoodFat("");
-        navigation.navigate('addMeal');
-        //navigation.goBack();
-        //navigation.goBack();
+        //navigation.navigate('addMeal');
+        navigation.goBack();
+        navigation.goBack();
     }
 
     return (

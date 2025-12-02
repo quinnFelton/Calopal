@@ -1,17 +1,16 @@
-import React, { useState, useEffect } from "react";
-import { TouchableOpacity, View, SafeAreaView, FlatList, ScrollView } from "react-native";
+import React, { useEffect, useState } from "react";
+import { SafeAreaView, ScrollView, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Button, Text } from 'react-native-paper';
 import { styles } from "../style/styles";
-import { Text, TextInput, Button, ActivityIndicator, List} from 'react-native-paper';
 
 // import { useFoods } from "../hooks/foodHook"; OLD
 import { useMeals } from "../hooks/mealHook";
-import FoodList from "foodList";
 
 import { useNavigation } from '@react-navigation/native';
 
 export default function mealList() {
     // const { items, loading, error, searchFoods, refresh, addFood } = useFoods(); OLD
-    const { items, loading, error, createMeal, addMealComponent,
+    const { items, loading, error, load, createMeal, addMealComponent,
             recalcMealMacros, getMealDetails, getMealById,
             getFoodsForMeal, addComponentAndRecalc, searchMeals } = useMeals();
     const [query, setQuery] = useState('');
@@ -55,7 +54,7 @@ export default function mealList() {
             </Text>
 
             <View style={styles.row}>
-                <Button mode="contained" onPress={() => navigation.navigate('addMeal')} style={styles.searchButton}>
+                <Button mode="contained" onPress={() => navigation.navigate('addMeal', {refresh: load})} style={styles.searchButton}>
                     Add Meal
                 </Button>
             </View>

@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { Modal, Text, TouchableOpacity, View, SafeAreaView, ScrollView } from "react-native";
-import { styles } from "../style/styles";
-import { TextInput, Button, ActivityIndicator } from 'react-native-paper';
-import { drizzle } from 'drizzle-orm/expo-sqlite';
-import { foods, meals } from '../db/schema';
+import { useNavigation } from '@react-navigation/native';
+import React, { useState } from "react";
+import { Modal, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Button, TextInput } from 'react-native-paper';
+import { useGlobal } from "../context/GlobalContext";
 import { NewFoodInput, useFoods } from '../hooks/foodHook';
 import { useMeals } from '../hooks/mealHook';
-import { useGlobal } from "../context/GlobalContext";
-import { useNavigation } from '@react-navigation/native';
+import { styles } from "../style/styles";
 
 
 interface Nutrient {
@@ -134,9 +132,9 @@ const APIScreen: React.FC = () => {
         else console.log('error adding meal component', error);
         setServing("");
         set_modal_active(false);
-        navigation.navigate('addMeal');
-        //navigation.goBack();
-        //navigation.goBack();
+        //navigation.navigate('addMeal');
+        navigation.goBack();
+        navigation.goBack();
     }
 
     // For USDA's DB search
