@@ -97,7 +97,7 @@ export default function AddMeal({ route }) {
 
             <TextInput
                 mode='outlined'
-                label={mealName || "Meal Name"}
+                label={"Meal Name"}
                 value={query}
                 onChangeText={setQuery}
                 style={styles.input}
