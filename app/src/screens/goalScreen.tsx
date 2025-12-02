@@ -154,12 +154,12 @@ export default function goalScreen() {
 
   const calories_name = "calories";
   const carbs_name = "carbs";
-  const protein_name = "protein";
+  const protein_name = "proteins";
   const fats_name = "fats";
 
   const todayDate = new Date();
   const today = todayDate.toISOString();
-  let todayGoals = [];
+  const [todayGoals, setTodayGoals] = useState([]);
   let completedGoals = [];
 
   const [weekStatus, setWeekStatus] = useState({
@@ -206,27 +206,22 @@ export default function goalScreen() {
   function readGoals() {
     emptyProgress();
     for (const goal of todayGoals) {
-      // schema uses true for min while this module was originally designed
-      // with true for max. rather than refactor the whole module, a dirty
-      // negation allows functionality to be maintained without refactoring. it
-      // would probably be better to refactor, but it is too late in
-      // development for it to be worthwhile.
       if (goal.macroType == calories_name) {
         setCalories(goal.completedValue);
         setCaloriesGoal(goal.targetValue);
-        setCaloriesOverUnder(!(goal.minOrMax));
+        setCaloriesOverUnder(goal.minOrMax);
       } else if (goal.macroType == protein_name) {
         setProtein(goal.completedValue);
         setProteinGoal(goal.targetValue);
-        setProteinOverUnder(!(goal.minOrMax));
+        setProteinOverUnder(goal.minOrMax);
       } else if (goal.macroType == carbs_name) {
         setCarbs(goal.completedValue);
         setCarbsGoal(goal.targetValue);
-        setCarbsOverUnder(!(goal.minOrMax));
+        setCarbsOverUnder(goal.minOrMax);
       } else if (goal.macroType == fats_name) {
         setFat(goal.completedValue);
         setFatGoal(goal.targetValue);
-        setFatOverUnder(!(goal.minOrMax));
+        setFatOverUnder(goal.minOrMax);
       }
     }
   }
@@ -237,13 +232,13 @@ export default function goalScreen() {
 
     let min_max = false;
     if (macro === calories_name) {
-      minOrMax = !calories_overUnder;
+      min_max = calories_overUnder;
     } else if (macro === protein_name) {
-      minOrMax = !protein_overUnder;
+      min_max = protein_overUnder;
     } else if (macro === carbs_name) {
-      minOrMax = !carbs_overUnder;
+      min_max = carbs_overUnder;
     } else if (macro === fats_name) {
-      minOrMax = !fat_overUnder;
+      min_max = fat_overUnder;
     }
 
     if (db_id != undefined) {
@@ -322,18 +317,22 @@ export default function goalScreen() {
       emptyProgress();
     } else {
       console.log(`goalScreen: ${items.length} item(s) found.`);
-      todayGoals = getGoalsFromDay(items, today);
+      setTodayGoals(getGoalsFromDay(items, today));
       updateCompletedGoals();
       updateWeekStatus();
-      if (todayGoals.length === 0) {
-        console.log("goalScreen: No items matching today.");
-        emptyProgress();
-      } else {
-        console.log(`goalScreen: ${todayGoals.length} item(s) found matching today.`)
-        readGoals();
-      }
+
     }
   }}, [loading, items]);
+
+  useEffect(() => {
+    if (todayGoals.length === 0) {
+      console.log("goalScreen: No items matching today.");
+      emptyProgress();
+    } else {
+      console.log(`goalScreen: ${todayGoals.length} item(s) found matching today.`)
+      readGoals();
+    }
+  }, [todayGoals]);
 
   const updateGoals = () => {
       setCaloriesGoal(calories_modal);
@@ -341,6 +340,7 @@ export default function goalScreen() {
       setFatGoal(fat_modal);
       setCarbsGoal(carbs_modal);
       set_modal_active(false);
+
       if (todayGoals.length > 0) {
         console.log("goalScreen: Pushing target changes to db");
         updateCaloriesTarget(calories_modal);
