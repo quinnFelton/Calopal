@@ -2,9 +2,10 @@ import { useEffect } from "react";
 //import { styles } from "./styles";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Image } from 'react-native';
-import { GlobalProvider } from "./src/context/GlobalContext";
-import { useGoals } from "./src/hooks/goalHook";
 import { type Goal } from "../db/schema";
+import { GlobalProvider } from "./src/context/GlobalContext";
+import { useCosmetics } from "./src/hooks/cosmeticHook";
+import { useGoals } from "./src/hooks/goalHook";
 import { useOnboarding } from "./src/hooks/onboardingHook";
 import AddMeal from "./src/screens/AddMeal";
 import APIScreen from "./src/screens/apiScreen";
@@ -208,9 +209,13 @@ export default function Index() {
       await updateLastLoggedIn();
     };
 
+    const { initializeDefaultCosmetics } = useCosmetics();
+
     useEffect(() => {
-      //handleNewLogin();
-    });
+      initializeDefaultCosmetics().catch(e => 
+        console.error('Failed to initialize cosmetics:', e)
+      );
+    }, [initializeDefaultCosmetics]);
 
     /**
      * Decide which screen to show based on onboarding status
