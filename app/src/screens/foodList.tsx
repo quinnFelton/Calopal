@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { Modal, TouchableOpacity, View, SafeAreaView, FlatList, ScrollView } from "react-native";
-import { styles } from "../style/styles";
-import { Text, TextInput, Button, ActivityIndicator, List} from 'react-native-paper';
-import { useMeals } from '../hooks/mealHook';
+import React, { useEffect, useState } from "react";
+import { Modal, SafeAreaView, ScrollView, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Button, Text, TextInput } from 'react-native-paper';
 import { useGlobal } from "../context/GlobalContext";
+import { useMeals } from '../hooks/mealHook';
+import { styles } from "../style/styles";
 
-import { useFoods } from "../hooks/foodHook"
+import { useFoods } from "../hooks/foodHook";
 
 import { useNavigation } from '@react-navigation/native';
 
@@ -53,6 +53,10 @@ export default function foodList() {
         if(!query)  setFoods(items.slice(1,10));
     }, [items, query]);
 
+    useEffect(() => {
+        setFoods(items.slice(0,10));
+    }, [items]);
+
     const handleSearch = async () => {
         if (!query.trim()){
             setFoods(items.slice(0,10));
@@ -71,8 +75,8 @@ export default function foodList() {
         else console.log('error adding meal component', error);
         setServing("");
         set_modal_active(false);
-        navigation.navigate('addMeal');
-        //navigation.goBack();
+        //navigation.navigate('addMeal');
+        navigation.goBack();
     }
 
     return(

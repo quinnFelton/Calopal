@@ -10,7 +10,8 @@ import { useMeals } from "../hooks/mealHook";
 
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
-export default function AddMeal() {
+export default function AddMeal({ route }) {
+    const { refresh } = route.params;
     const { items, error, load, createMeal, addMealComponent, getMealDetails, getFoodsForMeal} = useMeals();
     const { addMealToGoals } = useGoals();
     const { ActiveFoodID, setActiveFoodID } = useGlobal();
@@ -63,7 +64,9 @@ export default function AddMeal() {
         // reset global veriable
         await addMealToGoals(Number(ActiveFoodID));
         setActiveFoodID('');
-        navigation.navigate('NavBar');
+        //navigation.navigate('NavBar');
+        await refresh();
+        navigation.goBack();
     };
 
     return(
