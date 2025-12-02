@@ -53,6 +53,10 @@ export default function foodList() {
         if(!query)  setFoods(items.slice(1,10));
     }, [items, query]);
 
+    useEffect(() => {
+        setFoods(items.slice(0,10));
+    }, [items]);
+
     const handleSearch = async () => {
         if (!query.trim()){
             setFoods(items.slice(0,10));
