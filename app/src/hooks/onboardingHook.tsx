@@ -156,6 +156,27 @@ export function useOnboarding() {
     [db, user, load]
   );
 
+  const getGoalsCompleted = useCallback((): number => {
+    return user?.goalsCompleted ?? 0;
+  }, [user]);
+
+  const setGoalsCompleted = useCallback(
+    async (newTotal: number) => {
+      try {
+        if (!user) throw new Error('No user found');
+        await db
+          .update(userDetails)
+          .set({ goalsCompleted: newTotal })
+          .where(eq(userDetails.userName, user.userName))
+          .run?.();
+        await load();
+      } catch (e) {
+        setError(e as Error);
+      }
+    },
+    [db, user, load]
+  );
+
   return {
     user,
     loading,
@@ -167,5 +188,7 @@ export function useOnboarding() {
     updateUser,
     updateLastLoggedIn,
     addGoalsCompleted,
+    getGoalsCompleted,
+    setGoalsCompleted,
   };
 }
