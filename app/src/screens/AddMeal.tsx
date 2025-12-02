@@ -88,11 +88,11 @@ export default function AddMeal({ route }) {
             </Button>
 
             <Button mode="contained" onPress={handleSearch} style={styles.button}>
-                Add Item
+                Add Food
             </Button>
 
             <Text variant='headlineMedium' style={[styles.text, { textAlign: 'center', marginVertical: 12}]}>
-                Current Items
+                Current Foods
             </Text>
 
 
