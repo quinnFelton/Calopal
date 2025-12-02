@@ -29,28 +29,28 @@ function normalizeCosmetic(input: NewCosmeticInput): NewCosmeticInput {
 
 export const defaultCosmetics: NewCosmeticInput[] = [
   {
-    name: "TV",
-    imagePath: "TV.png",
+    name: "Cat Bed",
+    imagePath: "assets/images/Cosmetics/cat_bed_processed.png",
     anchoredToPet: false,
-    visible: true,
+    visible: false,
     x_pos: 200,
     y_pos: 100,
     angle: 0,
     scale: 1,
   },
   {
-    name: "Pool",
-    imagePath: "Pool.png",
+    name: "Cat Food",
+    imagePath: "assets/images/Cosmetics/cat_food_processed.png",
     anchoredToPet: false,
-    visible: true,
+    visible: false,
     x_pos: 0,
     y_pos: 0,
     angle: 0,
     scale: 1,
   },
   {
-    name: "Scratching Post",
-    imagePath: "ScratchingPost.png",
+    name: "Cat Tree",
+    imagePath: "assets/images/Cosmetics/cat_tree_processed.png",
     anchoredToPet: false,
     visible: false,
     x_pos: 10,
@@ -137,6 +137,30 @@ export function useCosmetics() {
     [db, items, load]
   );
 
+  const initializeDefaultCosmetics = useCallback(
+    async () => {
+      try {
+        // Check if cosmetics table is empty
+        const existingRows =
+          (await db.select().from(cosmetics).limit(1).all?.()) ??
+          (await db.select().from(cosmetics).limit(1));
+        
+        if (Array.isArray(existingRows) && existingRows.length > 0) {
+          // Cosmetics already exist, don't add defaults
+          return;
+        }
+
+        // Add all default cosmetics
+        for (const defaultCosmetic of defaultCosmetics) {
+          await addCosmetic(defaultCosmetic);
+        }
+      } catch (e) {
+        console.error('Error initializing default cosmetics:', e);
+      }
+    },
+    [db, addCosmetic]
+  );
+
   return {
     items,
     loading,
@@ -145,5 +169,6 @@ export function useCosmetics() {
     addCosmetic,
     toggleVisible,
     updateCosmetic,
+    initializeDefaultCosmetics,
   };
 }
