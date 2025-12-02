@@ -4,6 +4,7 @@ import { Button, Text, TextInput } from 'react-native-paper';
 import { styles } from "../style/styles";
 
 import { useGlobal } from "../context/GlobalContext";
+import { useGoals } from "../hooks/goalHook";
 import { useMeals } from "../hooks/mealHook";
 
 
@@ -11,11 +12,14 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
 export default function AddMeal() {
     const { items, error, load, createMeal, addMealComponent, getMealDetails, getFoodsForMeal} = useMeals();
+    const { addMealToGoals } = useGoals();
     const { ActiveFoodID, setActiveFoodID } = useGlobal();
     const [query, setQuery] = useState('');
     const [mealComponents, setMealComponents] = useState<any[]>([]);
     const [componentsLoading, setComponentsLoading] = useState(false);
     const navigation = useNavigation();
+
+    //NAME IS REMOVED AFTER ADDING FOOD ITEM!!!!
 
     // Load meal components whenever screen is viewed
     useFocusEffect(
@@ -46,7 +50,7 @@ export default function AddMeal() {
         if(NewMeal) console.log('meal successfuly created');
         else console.log('error creating meal', error);
 
-        // set global variable
+        // set global veriable
         setActiveFoodID(NewMeal.id);
 
     };
@@ -56,10 +60,10 @@ export default function AddMeal() {
     };
 
     const handleDone = async () => {
-        // reset global variable
+        // reset global veriable
+        await addMealToGoals(Number(ActiveFoodID));
         setActiveFoodID('');
         navigation.navigate('mealList');
-        //navigation.goBack();
     };
 
     return(

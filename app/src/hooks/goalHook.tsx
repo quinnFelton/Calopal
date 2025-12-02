@@ -1,7 +1,7 @@
 import { eq, sql } from "drizzle-orm";
 import { useCallback, useEffect, useState } from "react";
 import { useDrizzle } from "../db/drizzle";
-import { foods, goals, type Food, type Goal, type InsertGoal } from "../db/schema";
+import { goals, meals, type Goal, type InsertGoal } from "../db/schema";
 
 // Shape used when creating a new Goal from the UI
 export type NewGoalInput = {
@@ -109,49 +109,67 @@ export function useGoals() {
     [db, load]
   );
 
-  // Add a food item (by id) and quantity to a goal's completedValue.
-  // This will fetch the food, compute the contribution based on the goal's macroType,
-  // update completedValue and set isCompleted when target reached/exceeded (for Max)
-  const addFoodToGoal = useCallback(
-    async (goalId: number, foodId: number, quantity: number = 1) => {
-      // fetch goal and food
-      const [goalRows, foodRows] = await Promise.all([
-        (await db.select().from(goals).where(eq(goals.id, goalId)).limit(1).all?.()) ??
-          (await db.select().from(goals).where(eq(goals.id, goalId)).limit(1)),
-        (await db.select().from(foods).where(eq(foods.id, foodId)).limit(1).all?.()) ??
-          (await db.select().from(foods).where(eq(foods.id, foodId)).limit(1)),
-      ]);
+  // Add a meal's macros to all goals created on the same day
+  // This fetches the meal, finds all goals for that day, and updates their completedValue
+  // based on the meal's macros (calories, carbs, proteins, fats)
+  const addMealToGoals = useCallback(
+    async (mealId: number) => {
+      try {
+        // Fetch the meal
+        const mealRows =
+          (await db.select().from(meals).where(eq(meals.id, mealId)).limit(1).all?.()) ??
+          (await db.select().from(meals).where(eq(meals.id, mealId)).limit(1));
 
-      const goal = Array.isArray(goalRows) ? goalRows[0] : null;
-      const food = Array.isArray(foodRows) ? (foodRows[0] as Food) : null;
-      if (!goal) throw new Error("Goal not found");
-      if (!food) throw new Error("Food not found");
+        const meal = Array.isArray(mealRows) ? (mealRows[0] as any) : null;
+        if (!meal) throw new Error("Meal not found");
 
-      const macro = String(goal.macroType) as keyof Food;
-      // safe lookup and numeric conversion
-      const base = Number((food as any)[macro] ?? 0);
-      const delta = Number(quantity) * base;
+        // Extract meal's date (just the date part without time)
+        const mealDate = String(meal.date).split('T')[0];
 
-      const newCompleted = Number(goal.completedValue || 0) + delta;
-      const isCompleted = goal.minOrMax
-        ? newCompleted <= Number(goal.targetValue)
-        : newCompleted >= Number(goal.targetValue);
+        // Fetch all goals created on the same day
+        // Goals are created during onboarding, so we need to find goals where createdAt matches the meal's date
+        const goalsRows =
+          (await db
+            .select()
+            .from(goals)
+            .where(sql`DATE(${goals.createdAt}) = ${mealDate}`)
+            .all?.()) ??
+          (await db
+            .select()
+            .from(goals)
+            .where(sql`DATE(${goals.createdAt}) = ${mealDate}`));
 
-      await db
-        .update(goals)
-        .set({ completedValue: Math.round(newCompleted), isCompleted: isCompleted ? 1 : 0 })
-        .where(eq(goals.id, goalId))
-        .run?.();
+        const goalsForDay = Array.isArray(goalsRows) ? (goalsRows as Goal[]) : [];
 
-      await load();
+        // For each goal, add the corresponding macro from the meal to completedValue
+        for (const goal of goalsForDay) {
+          const macroType = String(goal.macroType).toLowerCase();
+          const mealMacro = Number((meal as any)[macroType] ?? 0);
+
+          const newCompleted = Number(goal.completedValue || 0) + mealMacro;
+          const isCompleted = goal.minOrMax
+            ? newCompleted <= Number(goal.targetValue)
+            : newCompleted >= Number(goal.targetValue);
+
+          await db
+            .update(goals)
+            .set({ completedValue: Math.round(newCompleted), isCompleted: isCompleted })
+            .where(eq(goals.id, goal.id))
+            .run?.();
+        }
+
+        await load();
+      } catch (e) {
+        throw e;
+      }
     },
     [db, load]
   );
 
   const getCompletedGoals = useCallback(async (): Promise<Goal[]> => {
     const rows =
-      (await db.select().from(goals).where(eq(goals.isCompleted, 1)).all?.()) ??
-      (await db.select().from(goals).where(eq(goals.isCompleted, 1)));
+      (await db.select().from(goals).where(eq(goals.isCompleted, true)).all?.()) ??
+      (await db.select().from(goals).where(eq(goals.isCompleted, true)));
     return rows as Goal[];
   }, [db]);
 
@@ -163,7 +181,7 @@ export function useGoals() {
     addGoal,
     updateGoal,
     deleteGoal,
-    addFoodToGoal,
+    addMealToGoals,
     getCompletedGoals,
   };
 }
