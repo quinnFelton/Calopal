@@ -1,8 +1,10 @@
-//import { useState } from "react";
+import { useEffect } from "react";
 //import { styles } from "./styles";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Image } from 'react-native';
 import { GlobalProvider } from "./src/context/GlobalContext";
+import { useGoals } from "./src/hooks/goalHook";
+import { type Goal } from "../db/schema";
 import { useOnboarding } from "./src/hooks/onboardingHook";
 import AddMeal from "./src/screens/AddMeal";
 import APIScreen from "./src/screens/apiScreen";
@@ -21,6 +23,28 @@ import OnboardingScreen from "./src/screens/onboardingScreen";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
+
+function sameDay(day_a: string, day_b: string): boolean {
+  // day_a and day_b must both be ISO timestamps
+  return (day_a.slice(0, 10) === day_b.slice(0, 10));
+}
+
+function getGoalsFromDay(items: Goal[], date: string): Goal[] {
+  return items.filter(item => {
+    return sameDay(date, item.createdAt);
+  });
+}
+
+function getMostRecentGoalDate(items: Goal[]): string {
+  const day = new Date(0);
+  for (const goal of items) {
+    const goalDay = new Date(goal.createdAt);
+    if (goalDay > day) {
+      day.setTime(goalDay.getTime());
+    }
+  }
+  return day.toISOString();
+}
 
 //Bottom most nav is for APIScreen, which should be temporary.
 
@@ -118,7 +142,75 @@ function handleMainAppScreen() {
 }
 
 export default function Index() {
-    const { loading, status, error, refresh, initializeUser, completeOnboarding } = useOnboarding();
+
+    const calories_name = "calories";
+    const carbs_name = "carbs";
+    const protein_name = "proteins";
+    const fats_name = "fats";
+
+    const { user, loading, status, error, refresh: refreshOnboarding, initializeUser, completeOnboarding, updateLastLoggedIn } = useOnboarding();
+    const { items, refresh: refreshGoals, addGoal } = useGoals();
+
+    const handleNewLogin = async () => {
+      if (!user) return; // do nothing if user is null
+
+      const now = new Date();
+      const now_string = now.toISOString();
+      let lastLogin_string = user.LastLoggedIn;
+      if (lastLogin_string === null) {
+          lastLogin_string = getMostRecentGoalDate(items).toISOString();
+      }
+      const lastLogin = new Date({ time: lastLogin_string });
+
+      // New day
+      if (sameDay(now_string, lastLogin_string) !== true ) {
+        // TODO: Mark past goals as passed or failed
+
+        // TODO: Set new goals
+        const lastGoals = getGoalsFromDay(items, lastLogin_string);
+        const lastCaloriesGoal = lastGoals.find(goal => goal.MacroType == calories_name);
+        const lastProteinsGoal = lastGoals.find(goal => goal.MacroType == protein_name);
+        const lastFatsGoal = lastGoals.find(goal => goal.MacroType == fats_name);
+        const lastCarbsGoal = lastGoals.find(goal => goal.MacroType == carbs_name);
+
+        if (lastCaloriesGoal !== null) {
+          await addGoal({
+            macroType: calories_name,
+            minOrMax: lastCaloriesGoal.minOrMax,
+            targetValue: lastCaloriesGoal.targetValue
+          });
+        }
+        if (lastProteinsGoal !== null) {
+          await addGoal({
+            macroType: protein_name,
+            minOrMax: lastProteinsGoal.minOrMax,
+            targetValue: lastProteinsGoal.targetValue
+          });
+        }
+        if (lastFatsGoal !== null) {
+          await addGoal({
+            macroType: fats_name,
+            minOrMax: lastFatsGoal.minOrMax,
+            targetValue: lastFatsGoal.targetValue
+          });
+        }
+        if (lastCarbsGoal !== null) {
+          await addGoal({
+            macroType: carbs_name,
+            minOrMax: lastCarbsGoal.minOrMax,
+            targetValue: lastCarbsGoal.targetValue
+          });
+        }
+
+        // TODO: Update pet happiness
+      }
+
+      await updateLastLoggedIn();
+    };
+
+    useEffect(() => {
+      //handleNewLogin();
+    });
 
     /**
      * Decide which screen to show based on onboarding status
