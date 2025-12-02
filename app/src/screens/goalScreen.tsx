@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
-import { Modal, Pressable, SafeAreaView, Text, View, Image, ScrollView } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
+import { useCallback, useEffect, useState } from "react";
+import { Image, Modal, Pressable, SafeAreaView, ScrollView, Text, View } from "react-native";
 import { Button, TextInput } from 'react-native-paper';
-import { styles } from "../style/styles";
-import { useGoals } from "../hooks/goalHook";
 import { type Goal } from "../db/schema";
+import { useGoals } from "../hooks/goalHook";
+import { styles } from "../style/styles";
 
-import { useFoods } from "../hooks/foodHook";
 
 function sameDay(day_a: string, day_b: string): boolean {
   // day_a and day_b must both be ISO timestamps
@@ -309,6 +309,12 @@ export default function goalScreen() {
   useEffect(() => {
       refresh();
   }, [refresh]);
+
+  useFocusEffect(
+    useCallback(() => {
+      refresh();
+    }, [refresh])
+  );
 
   useEffect(() => {
   if (!loading) {
