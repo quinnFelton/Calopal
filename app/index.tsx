@@ -1,7 +1,7 @@
-import { useEffect } from "react";
-//import { styles } from "./styles";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { useEffect } from "react";
 import { Image } from 'react-native';
+import { ActivityIndicator } from 'react-native-paper';
 import { type Goal } from "../db/schema";
 import { GlobalProvider } from "./src/context/GlobalContext";
 import { useCosmetics } from "./src/hooks/cosmeticHook";
@@ -16,6 +16,7 @@ import GoalScreen from "./src/screens/goalScreen";
 import HomeScreen from "./src/screens/homeScreen";
 import MealList from "./src/screens/mealList";
 import Onboarding from "./src/screens/onboardingScreen";
+import { styles } from "./src/style/styles";
 
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -226,7 +227,9 @@ export default function Index() {
      */
     return (
       <GlobalProvider>
-        {(status.onboardingCompleted === null) ? (
+        {loading ? (
+          <ActivityIndicator animating={true} styles={styles.loader} />
+        ) : (status.onboardingCompleted === null) ? (
           handleOnboardingScreen(initializeUser, completeOnboarding)
         ) : (
           handleMainAppScreen()
