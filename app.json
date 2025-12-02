@@ -4,7 +4,7 @@
     "slug": "Calopal",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/cat_icon_2.png",
     "scheme": "calopal",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
