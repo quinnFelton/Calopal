@@ -423,7 +423,7 @@ export default function goalScreen() {
                 setFatModal(val)
                 setFatOverUnder(over_under)
             }}/>
-            <GoalInput name="Carbs" default_value={carbs_modal}
+            <GoalInput name="Carbs" default_value={carbs_goal}
             default_over_under={carbs_overUnder} min_value={0}
             onChange={(val, over_under) => {
                 setCarbsModal(val)
