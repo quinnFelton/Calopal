@@ -37,7 +37,63 @@ export default function HomeScreen() {
         // Not the first login today? Skip
         if (last === today) return;
 
-        console.log("✨ First login today — copying yesterday’s goals...");
+        (async () => {
+                if (!user.lastLoggedIn) {
+                    await updateLastLoggedIn();
+                    await refreshUser();
+                    return;
+                }
+
+                const lastDate = new Date(user.lastLoggedIn);
+                const now = new Date();
+                const msPerDay = 1000 * 60 * 60 * 24;
+                const daysPassed = Math.floor((now.getTime() - lastDate.getTime()) / msPerDay);
+
+                if (daysPassed > 0) {
+                    const decayAmount = daysPassed * 2;
+                    const newPetState = Math.max(0, (user.petState ?? 0) - decayAmount);
+
+                    console.log(
+                        `Pet state decayed: ${user.petState} → ${newPetState} over ${daysPassed} day(s)`
+                    );
+
+                    await updateUser({ petState: newPetState });
+                    await updateLastLoggedIn();
+                    await refreshUser();
+                }
+            })();
+
+            // --- PET STATE GAIN FROM TODAY'S COMPLETED GOALS ---
+            (async () => {
+                if (!user) return;
+
+                const completed = await getCompletedGoals();
+                const todayStr = new Date().toISOString().slice(0, 10);
+
+                const todaysCompleted = completed.filter(g =>
+                    String(g.createdAt).slice(0, 10) === todayStr
+                );
+
+                const count = todaysCompleted.length;
+                let gain = 0;
+
+                if (count === 2) gain = 2;
+                else if (count === 3) gain = 4;
+                else if (count >= 4) gain = 5;
+
+                if (gain > 0) {
+                    const newPetState = (user.petState ?? 0) + gain;
+
+                    console.log(
+                        `Pet state increased from goals: completed ${count} → +${gain}, new state = ${newPetState}`
+                    );
+
+                    await updateUser({ petState: newPetState });
+                    await refreshUser();
+                }
+            })();
+
+        console.log("First login today — copying yesterday’s goals...");
 
         async function createGoalsFromYesterday() {
             const todayDate = new Date();
@@ -72,7 +128,7 @@ export default function HomeScreen() {
             await updateLastLoggedIn();
             await refreshUser();
 
-            console.log("📅 New goals created for today!");
+            console.log("New goals created for today!");
         }
 
         createGoalsFromYesterday();
