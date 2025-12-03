@@ -96,6 +96,25 @@ export function useGoals() {
         u.targetValue = Number.parseInt(String(updates.targetValue), 10) || 0;
 
       await db.update(goals).set(u).where(eq(goals.id, id)).run?.();
+      
+      const updatedRows =
+        (await db.select().from(goals).where(eq(goals.id, id)).limit(1).all?.()) ??
+        (await db.select().from(goals).where(eq(goals.id, id)).limit(1));
+      
+      const updatedGoal = Array.isArray(updatedRows) ? (updatedRows[0] as Goal) : null;
+      
+      if (updatedGoal) {
+        const completedValue = Number(updatedGoal.completedValue || 0);
+        const targetValue = Number(updatedGoal.targetValue || 0);
+        const minOrMax = updatedGoal.minOrMax === 1 || updatedGoal.minOrMax === true;
+        
+        const isCompleted = minOrMax 
+          ? completedValue >= targetValue 
+          : completedValue <= targetValue;
+        
+        await db.update(goals).set({ isCompleted }).where(eq(goals.id, id)).run?.();
+      }
+      
       await load();
     },
     [db, load]
@@ -172,6 +191,8 @@ export function useGoals() {
       (await db.select().from(goals).where(eq(goals.isCompleted, true)));
     return rows as Goal[];
   }, [db]);
+
+  
 
   return {
     items,

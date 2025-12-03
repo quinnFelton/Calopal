@@ -61,7 +61,7 @@ export function useMeals() {
       const normalized = normalizeNewMeal(input);
 
       if (!normalized.name) {
-        throw new Error("Meal name is required.");
+        normalized.name = "Meal";
       }
 
       try {
