@@ -5,6 +5,7 @@ import { Dimensions, Image } from 'react-native';
 import { Button } from 'react-native-paper';
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import CatAnim from "../components/catHomeAnim";
+import { useCosmetics } from '../hooks/cosmeticHook';
 import { useGoals } from "../hooks/goalHook";
 import { useOnboarding } from "../hooks/onboardingHook";
 import { styles } from "../style/styles";
@@ -16,21 +17,28 @@ const { width, height } = Dimensions.get('window');
 
 export default function HomeScreen() {
     const navigation = useNavigation();
-    const { user, updateLastLoggedIn, refresh: refreshUser, updateUser } = useOnboarding();
-    const { items, addGoal, refresh: refreshGoals, getCompletedGoals } = useGoals();
+    const { user, updateLastLoggedIn, refresh: refreshUser } = useOnboarding();
+    const { items, addGoal, refresh: refreshGoals } = useGoals();
+    
 
-    const [showcatBed, /*setCatBed*/] = useState(false);
-    const [showcatTree, /*setCatTree*/] = useState(false);
-    const [showcatFood, /*setCatFood*/] = useState(false);
+    const [showcatBed, setCatBed] = useState(false);
+    const [showcatTree, setCatTree] = useState(false);
+    const [showcatFood, setCatFood] = useState(false);
+    const { items:cosmetics } = useCosmetics();
+    const cosmetic1 = cosmetics.find(c => c.name == "Cat Tree");
+    const cosmetic2 = cosmetics.find(c => c.name == "Cat Food");
+    const cosmetic3 = cosmetics.find(c => c.name == "Cat Bed");
+
+    console.log(cosmetic1?.visible);
+    console.log(cosmetic2?.visible);
+    console.log(cosmetic3?.visible);
 
     function sameDay(a: string, b: string) {
         return a.slice(0, 10) === b.slice(0, 10);
     }
 
-    function getGoalsFromDay(items: Goal[], date: string): Goal[] {
-      return items.filter(item => {
-        return sameDay(date, item.createdAt);
-      });
+    function getGoalsFromDay(dateStr: string) {
+        return items.filter(g => sameDay(g.createdAt, dateStr));
     }
 
     useEffect(() => {
@@ -100,25 +108,23 @@ export default function HomeScreen() {
                 }
             })();
 
-        console.log("Copying previous goals.");
+        console.log("First login today — copying yesterday’s goals...");
 
-        async function createGoalsFromPrevious() {
-            // Find the last time goals were set
-            let prevDate = new Date(0);
-            for (const goal of items) {
-              const goalDate = new Date(goal.createdAt);
-              if (goalDate > prevDate) {
-                prevDate = goalDate;
-              }
-            }
-            const prevDate_string = prevDate.toISOString();
+        async function createGoalsFromYesterday() {
+            const todayDate = new Date();
+            const yesterdayDate = new Date(todayDate);
+            yesterdayDate.setDate(todayDate.getDate() - 1);
 
-            // Read previous goals
-            const yGoals = getGoalsFromDay(items, prevDate_string);
+            const yesterday = yesterdayDate.toISOString().slice(0, 10);
 
-            // If no goals found → nothing to copy
+            // Read yesterday’s goals
+            const yGoals = getGoalsFromDay(yesterday);
+
+            console.log("Yesterday's goals:", yGoals);
+
+            // If no goals yesterday → nothing to copy
             if (yGoals.length === 0) {
-                console.log("No goals found — nothing created.");
+                console.log("No goals from yesterday — nothing created.");
                 await updateLastLoggedIn();
                 await refreshUser();
                 return;
@@ -128,6 +134,7 @@ export default function HomeScreen() {
             for (const g of yGoals) {
                 await addGoal({
                     macroType: g.macroType,
+                    minOrMax: g.minOrMax === 1,   // convert DB int → bool
                     targetValue: g.targetValue
                 });
             }
@@ -139,7 +146,7 @@ export default function HomeScreen() {
             console.log("New goals created for today!");
         }
 
-        createGoalsFromPrevious();
+        createGoalsFromYesterday();
     }, [user, items]);
   
   return (
