@@ -58,14 +58,14 @@ export function useOnboarding() {
           userName: userName.trim(),
           petName: petName.trim(),
           goalsCompleted: 0,
-          petState: 0,
+          petState: 12,
           onboardingCompleted: false,
         } as InsertUserDetail).run?.() ?? 
           db.insert(userDetails).values({
             userName: userName.trim(),
             petName: petName.trim(),
             goalsCompleted: 0,
-            petState: 0,
+            petState: 12,
             onboardingCompleted: false,
           } as InsertUserDetail));
 
