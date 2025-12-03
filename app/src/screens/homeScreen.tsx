@@ -5,6 +5,7 @@ import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import CatAnim from "../components/catHomeAnim";
 import { styles } from "../style/styles";
 
+import { defaultCosmetics, useCosmetics } from "../hooks/cosmeticHook";
 import { useOnboarding } from "../hooks/onboardingHook";
 import { useGoals } from "../hooks/goalHook";
 import { useEffect } from "react";
