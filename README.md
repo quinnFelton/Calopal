@@ -18,8 +18,6 @@ https://docs.google.com/spreadsheets/d/1MJUmmVKrJdNKZ-HmoEoerkga3mLxRGds6eEHWYWU
 - **Expo CLI**: 50+ (installed globally or via `npx`)
 - **Device/Emulator**: 
   - Android emulator (via Android Studio) or physical device with Expo Go
-  - iOS simulator (Mac only) or Expo Go on iPhone
-  - Windows/Mac/Linux development machine
 
 ---
 
@@ -101,12 +99,10 @@ Calopal/
 │   │   ├── context/              # Global context (GlobalContext)
 │   │   └── style/                # Centralized styles (styles.tsx)
 ├── drizzle/                       # Database migrations
-├── android/ & ios/               # Native platform code (Expo-generated)
 ├── package.json                   # Dependencies & scripts
 ├── tsconfig.json                  # TypeScript config
 ├── eslint.config.js               # ESLint rules
 ├── babel.config.js                # Babel transpiler config
-├── CODING_STYLE.md                # Development style guide
 └── README.md                     # This file
 ```
 
@@ -234,14 +230,7 @@ Common errors:
 eas build --platform android
 ```
 
-### Build for iOS
-
-```bash
-eas build --platform ios
-```
-
 Requires:
-- Apple Developer Account
 - EAS CLI (`npm install -g eas-cli`)
 - Provisioning profiles set up
 
@@ -271,21 +260,21 @@ Refer to [Expo EAS Documentation](https://docs.expo.dev/build/setup/) for detail
 **Want to contribute?**
 - Fork the repo
 - Create a feature branch
-- Follow CODING_STYLE.md
 - Submit a pull request
 
 ---
 
 ## License
 
+No License given
 Calopal © 2025 Quinn Felton. All rights reserved.
 
 ---
 
 ## What's Next?
 
-- [ ] Connect to nutrition API for auto-food detection
-- [ ] Social features (share progress, challenges)
+- [ ] Add more pets (Dogs, Monkeys, Banana Slugs)
+- [ ] Social features visiting another pet owner's house if they're physically nearby
 - [ ] More cosmetics & pet customization
 - [ ] Workout tracking integration
 - [ ] Push notifications for goal reminders
