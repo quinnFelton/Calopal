@@ -14,7 +14,7 @@ export default function CatAnim({size = 100, speed = 1000}) {
     const isMove = useSharedValue(false);
     const tabBarHeight = useBottomTabBarHeight();
 
-    const catState = 'sad';
+    const catState = 'happy';
     
     const animStyle = useAnimatedStyle(() => {
         return {
@@ -36,11 +36,11 @@ export default function CatAnim({size = 100, speed = 1000}) {
     const move = () => {
         const { x: newX, y: newY } = randomPosition();
         x.value = withTiming(newX, {
-            duration: speed + Math.random() * 2000,
+            duration: speed + Math.random() * 5000,
             easing: Easing.inOut(Easing.quad),
         });
         y.value = withTiming(newY, {
-            duration: speed + Math.random() * 2000,
+            duration: speed + Math.random() * 5000,
             easing: Easing.inOut(Easing.quad),
         });
     };
@@ -49,7 +49,7 @@ export default function CatAnim({size = 100, speed = 1000}) {
         let timeout;
         const loop = () => {
         move();
-        timeout = setTimeout(loop, Math.random() * (5000 - 1500 + 1) + 1500);
+        timeout = setTimeout(loop, Math.random() * (10000 - 5000 + 1) + 5000);
         };
         loop();
 
