@@ -2,6 +2,7 @@ import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import React, { useEffect } from 'react';
 import { Dimensions } from 'react-native';
 import Animated, { Easing, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import { useOnboarding } from "../hooks/onboardingHook";
 
 const { width, height } = Dimensions.get('window');
 
@@ -9,13 +10,15 @@ const { width, height } = Dimensions.get('window');
 
 //Speed is measured as milisecond for the purposes of random calcs and timeout purposes.
 export default function CatAnim({size = 100, speed = 1000}) {
+    const { user, updateLastLoggedIn, refresh: refreshUser } = useOnboarding();
+
     const x = useSharedValue(width / 2);
     const y = useSharedValue(height / 2);
     const isMove = useSharedValue(false);
     const tabBarHeight = useBottomTabBarHeight();
 
-    const catState = 'happy';
-    
+    const catStateNum = user?.petState
+
     const animStyle = useAnimatedStyle(() => {
         return {
             transform: [{translateX: x.value - size / 2}, {translateY: y.value - size / 2}],
@@ -56,14 +59,15 @@ export default function CatAnim({size = 100, speed = 1000}) {
         return () => clearTimeout(timeout);
     });
 
+    // Inclusive: 0-4 Angry 5-9 Sad 10-14 Neutral 15-19 Happy 20+ Very Happy
     let tempSource = require('../../../assets/images/Cat Assets/cat_sit_neutral.png');
-    if (catState == 'happy') {
+    if (catStateNum >= 15 && catStateNum <= 19) {
         tempSource =  require('../../../assets/images/Cat Assets/cat_sit_happy.png')
-    } else if (catState == 'veryHappy') {
+    } else if (catStateNum >= 20) {
         tempSource = require('../../../assets/images/Cat Assets/cat_sit_very_happy.png')
-    } else if (catState == 'angry') {
+    } else if (catStateNum >= 0 && catStateNum <= 4) {
         tempSource = require('../../../assets/images/Cat Assets/cat_sit_angry.png')
-    } else if (catState == 'sad') {
+    } else if (catStateNum >= 5 && catStateNum <= 9) {
         tempSource = require('../../../assets/images/Cat Assets/cat_sit_sad.png')
     }
 

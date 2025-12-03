@@ -8,6 +8,8 @@
 Calopal is a React Native fitness tracking app built with **Expo**, **TypeScript**, **Drizzle ORM**, and **SQLite**. Track daily meals, set macro goals, and unlock cosmetics as you complete fitness milestones.
 
 ---
+## Deliverables
+https://docs.google.com/spreadsheets/d/1MJUmmVKrJdNKZ-HmoEoerkga3mLxRGds6eEHWYWUD_o/edit?gid=0#gid=0
 
 ## System Requirements
 
@@ -105,7 +107,7 @@ Calopal/
 ├── eslint.config.js               # ESLint rules
 ├── babel.config.js                # Babel transpiler config
 ├── CODING_STYLE.md                # Development style guide
-└── RELEASE.md                     # This file
+└── README.md                     # This file
 ```
 
 ---
@@ -193,12 +195,7 @@ Database migrations stored in `drizzle/` directory. New schema changes auto-appl
 
 ### Code Style
 
-Follow the **[CODING_STYLE.md](./app/CODING_STYLE.md)** guide for:
-- TypeScript conventions
-- Hook patterns & CRUD functions
-- Component structure
-- Database queries (Drizzle)
-- Styling approach
+Follow the **Style Guide** For all coding Style 
 
 ### Debugging
 
