@@ -2,6 +2,7 @@ import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import React, { useEffect } from 'react';
 import { Dimensions } from 'react-native';
 import Animated, { Easing, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import { useOnboarding } from "../hooks/onboardingHook";
 
 const { width, height } = Dimensions.get('window');
 
@@ -9,6 +10,8 @@ const { width, height } = Dimensions.get('window');
 
 //Speed is measured as milisecond for the purposes of random calcs and timeout purposes.
 export default function CatAnim({size = 100, speed = 1000}) {
+    const { user, updateLastLoggedIn, refresh: refreshUser } = useOnboarding();
+
     const x = useSharedValue(width / 2);
     const y = useSharedValue(height / 2);
     const isMove = useSharedValue(false);
