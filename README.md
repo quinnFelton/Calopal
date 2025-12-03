@@ -107,7 +107,7 @@ Calopal/
 ├── eslint.config.js               # ESLint rules
 ├── babel.config.js                # Babel transpiler config
 ├── CODING_STYLE.md                # Development style guide
-└── RELEASE.md                     # This file
+└── README.md                     # This file
 ```
 
 ---
