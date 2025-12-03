@@ -1,6 +1,6 @@
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { ImageBackground } from "expo-image";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Dimensions, Image } from 'react-native';
 import { Button } from 'react-native-paper';
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
@@ -19,19 +19,27 @@ export default function HomeScreen() {
     const navigation = useNavigation();
     const { user, updateLastLoggedIn, refresh: refreshUser } = useOnboarding();
     const { items, addGoal, refresh: refreshGoals } = useGoals();
-    
+    const { items:cosmetics } = useCosmetics();
 
     const [showcatBed, setCatBed] = useState(false);
     const [showcatTree, setCatTree] = useState(false);
     const [showcatFood, setCatFood] = useState(false);
-    const { items:cosmetics } = useCosmetics();
-    const cosmetic1 = cosmetics.find(c => c.name == "Cat Tree");
-    const cosmetic2 = cosmetics.find(c => c.name == "Cat Food");
-    const cosmetic3 = cosmetics.find(c => c.name == "Cat Bed");
+    
+    let cosmetic1 = cosmetics.find(c => c.name == "Cat Tree");
+    let cosmetic2 = cosmetics.find(c => c.name == "Cat Food");
+    let cosmetic3 = cosmetics.find(c => c.name == "Cat Bed");
 
-    console.log(cosmetic1?.visible);
+    /*console.log(cosmetic1?.visible);
     console.log(cosmetic2?.visible);
-    console.log(cosmetic3?.visible);
+    console.log(cosmetic3?.visible);*/
+
+    useFocusEffect(
+      useCallback(() => {
+          setCatBed(cosmetic3?.visible)
+          setCatTree(cosmetic1?.visible)
+          setCatFood(cosmetic2?.visible)
+      }, [])
+    );
 
     function sameDay(a: string, b: string) {
         return a.slice(0, 10) === b.slice(0, 10);
