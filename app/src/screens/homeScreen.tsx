@@ -16,8 +16,8 @@ const { width, height } = Dimensions.get('window');
 
 export default function HomeScreen() {
     const navigation = useNavigation();
-    const { user, updateLastLoggedIn, refresh: refreshUser } = useOnboarding();
-    const { items, addGoal, refresh: refreshGoals } = useGoals();
+    const { user, updateLastLoggedIn, refresh: refreshUser, updateUser } = useOnboarding();
+    const { items, addGoal, refresh: refreshGoals, getCompletedGoals } = useGoals();
 
     const [showcatBed, /*setCatBed*/] = useState(false);
     const [showcatTree, /*setCatTree*/] = useState(false);
@@ -27,8 +27,10 @@ export default function HomeScreen() {
         return a.slice(0, 10) === b.slice(0, 10);
     }
 
-    function getGoalsFromDay(dateStr: string) {
-        return items.filter(g => sameDay(g.createdAt, dateStr));
+    function getGoalsFromDay(items: Goal[], date: string): Goal[] {
+      return items.filter(item => {
+        return sameDay(date, item.createdAt);
+      });
     }
 
     useEffect(() => {
@@ -98,23 +100,25 @@ export default function HomeScreen() {
                 }
             })();
 
-        console.log("First login today — copying yesterday’s goals...");
+        console.log("Copying previous goals.");
 
-        async function createGoalsFromYesterday() {
-            const todayDate = new Date();
-            const yesterdayDate = new Date(todayDate);
-            yesterdayDate.setDate(todayDate.getDate() - 1);
+        async function createGoalsFromPrevious() {
+            // Find the last time goals were set
+            let prevDate = new Date(0);
+            for (const goal of items) {
+              const goalDate = new Date(goal.createdAt);
+              if (goalDate > prevDate) {
+                prevDate = goalDate;
+              }
+            }
+            const prevDate_string = prevDate.toISOString();
 
-            const yesterday = yesterdayDate.toISOString().slice(0, 10);
+            // Read previous goals
+            const yGoals = getGoalsFromDay(items, prevDate_string);
 
-            // Read yesterday’s goals
-            const yGoals = getGoalsFromDay(yesterday);
-
-            console.log("Yesterday's goals:", yGoals);
-
-            // If no goals yesterday → nothing to copy
+            // If no goals found → nothing to copy
             if (yGoals.length === 0) {
-                console.log("No goals from yesterday — nothing created.");
+                console.log("No goals found — nothing created.");
                 await updateLastLoggedIn();
                 await refreshUser();
                 return;
@@ -124,7 +128,6 @@ export default function HomeScreen() {
             for (const g of yGoals) {
                 await addGoal({
                     macroType: g.macroType,
-                    minOrMax: g.minOrMax === 1,   // convert DB int → bool
                     targetValue: g.targetValue
                 });
             }
@@ -136,7 +139,7 @@ export default function HomeScreen() {
             console.log("New goals created for today!");
         }
 
-        createGoalsFromYesterday();
+        createGoalsFromPrevious();
     }, [user, items]);
   
   return (

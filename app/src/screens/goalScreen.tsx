@@ -209,18 +209,22 @@ export default function goalScreen() {
       if (goal.macroType == calories_name) {
         setCalories(goal.completedValue);
         setCaloriesGoal(goal.targetValue);
+        setCaloriesModal(goal.targetValue);
         setCaloriesOverUnder(goal.minOrMax);
       } else if (goal.macroType == protein_name) {
         setProtein(goal.completedValue);
         setProteinGoal(goal.targetValue);
+        setProteinModal(goal.targetValue);
         setProteinOverUnder(goal.minOrMax);
       } else if (goal.macroType == carbs_name) {
         setCarbs(goal.completedValue);
         setCarbsGoal(goal.targetValue);
+        setCarbsModal(goal.targetValue);
         setCarbsOverUnder(goal.minOrMax);
       } else if (goal.macroType == fats_name) {
         setFat(goal.completedValue);
         setFatGoal(goal.targetValue);
+        setFatModal(goal.targetValue);
         setFatOverUnder(goal.minOrMax);
       }
     }
@@ -264,11 +268,8 @@ export default function goalScreen() {
     updateGoalTarget(new_target, fats_name);
   }
 
-  const updateCompletedGoals = async() => {
-    completedGoals = await getCompletedGoals();
-  }
-
-  function updateWeekStatus() {
+  const updateWeekStatus = async() => {
+    const completedGoals = await getCompletedGoals();
     const progress_complete = "✅";
     const progress_todo = "☐";
     const progress_incomplete = "❌";
@@ -319,25 +320,24 @@ export default function goalScreen() {
   useEffect(() => {
   if (!loading) {
     if (items.length === 0) {
-      console.log("goalScreen: No items found.");
+      console.log("goalScreen loading: No items found.");
       emptyProgress();
     } else {
-      console.log(`goalScreen: ${items.length} item(s) found.`);
+      console.log(`goalScreen loading: ${items.length} item(s) found.`);
       setTodayGoals(getGoalsFromDay(items, today));
-      updateCompletedGoals();
-      updateWeekStatus();
 
     }
   }}, [loading, items]);
 
   useEffect(() => {
     if (todayGoals.length === 0) {
-      console.log("goalScreen: No items matching today.");
+      console.log("goalScreen update: No items matching today.");
       emptyProgress();
     } else {
-      console.log(`goalScreen: ${todayGoals.length} item(s) found matching today.`)
+      console.log(`goalScreen update: ${todayGoals.length} item(s) found matching today.`)
       readGoals();
     }
+    updateWeekStatus();
   }, [todayGoals]);
 
   const updateGoals = () => {
