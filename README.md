@@ -1,53 +1,298 @@
-# Welcome to your Expo app 👋
+# Calopal — Release & Setup Guide
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+**Version**: 1.0.0  
+**Last Updated**: December 2, 2025  
 
-## Get started
+## Overview
 
-Our Group documentatin: https://docs.google.com/document/d/1Gebp76J9SUYkHan7nAEYz_zNIV7dWV8xZOgBb407epw/edit?tab=t.0
+Calopal is a React Native fitness tracking app built with **Expo**, **TypeScript**, **Drizzle ORM**, and **SQLite**. Track daily meals, set macro goals, and unlock cosmetics as you complete fitness milestones.
 
+---
 
-1. Install dependencies
+## System Requirements
 
-   ```bash
-   npm install
-   ```
+- **Node.js**: 18+ (LTS recommended)
+- **npm**: 9+
+- **Expo CLI**: 50+ (installed globally or via `npx`)
+- **Device/Emulator**: 
+  - Android emulator (via Android Studio) or physical device with Expo Go
+  - iOS simulator (Mac only) or Expo Go on iPhone
+  - Windows/Mac/Linux development machine
 
-2. Start the app
+---
 
-   ```bash
-   npx expo start
-   ```
+## Installation
 
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+### 1. Clone the Repository
 
 ```bash
-npm run reset-project
+git clone https://github.com/quinnFelton/Calopal.git
+cd Calopal
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### 2. Install Dependencies
 
-## Learn more
+```bash
+npm install
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+If you encounter issues with optional dependencies (common on Windows):
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```bash
+rm -r node_modules package-lock.json
+npm install
+```
 
-## Join the community
+### 3. Verify Setup
 
-Join our community of developers creating universal apps.
+```bash
+npm run lint
+```
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+This confirms TypeScript, ESLint, and project structure are healthy.
+
+---
+
+## Running the App
+
+### Development Mode (Recommended)
+
+```bash
+npm start
+```
+
+This launches the **Expo Development Server**. You'll see a QR code in the terminal.
+
+**On Android:**
+- Scan the QR code with **Expo Go** app (available on Google Play)
+- Or press `a` in the terminal to launch Android Emulator
+
+**On iOS (Mac only):**
+- Scan the QR code with iPhone camera
+- Or press `i` to launch iOS Simulator
+
+**Web (Limited):**
+- Press `w` in the terminal to open in browser (some features unavailable)
+
+### Production Build
+
+```bash
+npm run build
+```
+
+Creates optimized bundles for deployment to app stores (requires EAS CLI setup).
+
+---
+
+## Project Structure
+
+```
+Calopal/
+├── app/                          # Main React Native app
+│   ├── index.tsx                 # Root navigation & app initialization
+│   ├── _layout.tsx               # Expo Router layout
+│   ├── src/
+│   │   ├── screens/              # UI screens (HomeScreen, GoalScreen, etc.)
+│   │   ├── hooks/                # Custom hooks (useGoals, useMeals, useCosmetics, etc.)
+│   │   ├── components/           # Reusable components
+│   │   ├── db/                   # Drizzle schema & database setup
+│   │   ├── context/              # Global context (GlobalContext)
+│   │   └── style/                # Centralized styles (styles.tsx)
+├── drizzle/                       # Database migrations
+├── android/ & ios/               # Native platform code (Expo-generated)
+├── package.json                   # Dependencies & scripts
+├── tsconfig.json                  # TypeScript config
+├── eslint.config.js               # ESLint rules
+├── babel.config.js                # Babel transpiler config
+├── CODING_STYLE.md                # Development style guide
+└── RELEASE.md                     # This file
+```
+
+---
+
+## Key Features & How to Use
+
+### 1. Onboarding
+
+On first launch:
+- **Enter your name** and **pet name**
+- **Set daily macro goals** (calories, protein, fat, carbs)
+- Choose **min/max** for each goal (↑ = at least, ↓ = at most)
+- Tap **"Start My Journey"** to begin
+
+### 2. Home Screen
+
+**Daily view** showing:
+- Pet cosmetics display
+- Meal tracking
+- Goal progress rings
+- Quick-add meal button
+
+### 3. Goal Screen
+
+**Weekly report**:
+- Checkmarks (✅) for completed days
+- Daily macro breakdown with color coding
+- Red = goal not met, Green = goal met
+
+**Modify goals**:
+- Tap **"Modify Goals"** button
+- Update target values and min/max direction
+- Changes apply immediately
+
+### 4. Meal Tracking
+
+**Add a meal**:
+1. Tap **"Add Meal"** on Home
+2. Enter meal name (e.g., "Breakfast")
+3. Tap **"Create Meal"** (button enables after)
+4. Tap **"Add Food"** to search & add food items
+5. Tap **"Done"** when finished
+
+Meals automatically update:
+- Goal progress (macros added to daily total)
+- Pet happiness (cosmetics unlocked at milestones)
+
+### 5. Cosmetics Shop
+
+**Unlock cosmetics** by completing goals:
+- 1st cosmetic: 15 goals completed
+- 2nd cosmetic: 30 goals completed
+- 3rd cosmetic: 45 goals completed
+
+Each card shows:
+- Cosmetic name
+- Green checkmark = visible on pet (toggle to show/hide)
+- Preview image
+
+**Debug mode** (test unlock tiers):
+- Input field at bottom allows manual goal count adjustment
+- Useful for testing before hitting actual milestones
+
+---
+
+## Database
+
+### SQLite (Local Storage)
+
+All data stored on-device via SQLite with **Drizzle ORM**:
+- User details (name, pet, goals completed, onboarding state)
+- Meals & meal components (name, date, macros)
+- Goals (macro targets, progress, completion status)
+- Cosmetics (visibility, position, appearance)
+
+**Data persists** between app launches.
+
+### Migrations
+
+Database migrations stored in `drizzle/` directory. New schema changes auto-applied on app start (via Drizzle).
+
+---
+
+## Development Workflow
+
+### Code Style
+
+Follow the **[CODING_STYLE.md](./app/CODING_STYLE.md)** guide for:
+- TypeScript conventions
+- Hook patterns & CRUD functions
+- Component structure
+- Database queries (Drizzle)
+- Styling approach
+
+### Debugging
+
+**React Native Debugger:**
+```bash
+npm start
+```
+Press `j` in terminal to open Debugger
+
+**Console Logs:**
+Visible in terminal & Debugger console
+
+**Hot Reload:**
+- Changes auto-reload in dev mode
+- Full refresh: `Ctrl+M` (Android) or `Cmd+D` (iOS Simulator)
+
+### Testing the App
+
+Run lint checks:
+```bash
+npm run lint
+```
+
+Common errors:
+- **"Cannot find module"**: Delete `node_modules` and `package-lock.json`, then `npm install`
+- **"Database locked"**: Restart the dev server
+- **StyleSheet type errors**: Known React Native + TypeScript issue (non-blocking)
+
+---
+
+## Deployment
+
+### Build for Android
+
+```bash
+eas build --platform android
+```
+
+### Build for iOS
+
+```bash
+eas build --platform ios
+```
+
+Requires:
+- Apple Developer Account
+- EAS CLI (`npm install -g eas-cli`)
+- Provisioning profiles set up
+
+Refer to [Expo EAS Documentation](https://docs.expo.dev/build/setup/) for details.
+
+---
+
+## Troubleshooting
+
+| Issue | Solution |
+|-------|----------|
+| **App won't start** | Clear cache: `npm start -- --clear` |
+| **Expo Go crashes** | Reinstall Expo Go from app store |
+| **Database locked** | Restart dev server: `Ctrl+C` then `npm start` |
+| **Styles not updating** | Full reload: `Cmd+D` (iOS) or `Ctrl+M` (Android) |
+| **TypeScript errors on styles** | Known issue; non-blocking. Use `as any` if needed. |
+| **Android emulator slow** | Allocate more RAM in Android Studio settings |
+
+---
+
+## Support & Contribution
+
+**Bugs or feature requests?**
+- Open an issue on [GitHub](https://github.com/quinnFelton/Calopal/issues)
+- Include app version, device, and reproduction steps
+
+**Want to contribute?**
+- Fork the repo
+- Create a feature branch
+- Follow CODING_STYLE.md
+- Submit a pull request
+
+---
+
+## License
+
+Calopal © 2025 Quinn Felton. All rights reserved.
+
+---
+
+## What's Next?
+
+- [ ] Connect to nutrition API for auto-food detection
+- [ ] Social features (share progress, challenges)
+- [ ] More cosmetics & pet customization
+- [ ] Workout tracking integration
+- [ ] Push notifications for goal reminders
+
+---
+
+**Happy tracking! 🐱**
