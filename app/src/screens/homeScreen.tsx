@@ -1,17 +1,46 @@
 import { useNavigation } from '@react-navigation/native';
 import { ImageBackground } from "expo-image";
+import { useEffect } from "react";
+import { Image } from 'react-native';
 import { Button } from 'react-native-paper';
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import CatAnim from "../components/catHomeAnim";
-import { styles } from "../style/styles";
-
-import { defaultCosmetics, useCosmetics } from "../hooks/cosmeticHook";
-import { useOnboarding } from "../hooks/onboardingHook";
 import { useGoals } from "../hooks/goalHook";
-import { useEffect } from "react";
+import { useOnboarding } from "../hooks/onboardingHook";
+import { styles } from "../style/styles";
 
 
 // IF SIZE IN CATANIME IS CHANGED, VALUES IN CATHOMEANIM MUST BE CHANGED ACCORDINGLY SINCE ITS KINDA HARDCODED WITH THE SIZE
+
+const CatBed = ({visible = false}) => {
+  if (visible == true) {
+    return <Image 
+              source={require("../../../assets/images/Cosmetics/cat_bed_processed.png")}
+              resizeMode={'contain'}
+              style={{position:'absolute', top: 350, left: 280, width: 160, height:160}}
+            />
+  }
+}
+
+const CatTree = ({visible = false}) => {
+  if (visible == true) {
+    return <Image 
+              source={require("../../../assets/images/Cosmetics/cat_tree_processed.png")}
+              resizeMode={'contain'}
+              style={{position:'absolute', top: 270, left: -20, width: 200, height:200}}
+            />
+  }
+}
+
+const CatFood = ({visible = false}) => {
+  if (visible == true) {
+    return <Image 
+              source={require("../../../assets/images/Cosmetics/cat_food_processed.png")}
+              resizeMode={'contain'}
+              style={{position:'absolute', top: 400, left: 250, width: 70, height:70}}
+            />
+  }
+}
 
 export default function HomeScreen() {
     const navigation = useNavigation();
@@ -77,15 +106,17 @@ export default function HomeScreen() {
 
         createGoalsFromYesterday();
     }, [user, items]);
-
-
-
+  
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container} edges={['left','right']}>
         <ImageBackground source={require('../../../assets/images/home_bg.jpg')} contentFit="cover" style={styles.backgroundImage}>
+          <CatBed visible={true}/>
+          <CatTree visible={true}/>
+          <CatFood visible={true}/>
           <CatAnim size = {140}/>
         </ImageBackground>
+        
         <Button mode='contained'
           onPress={() => navigation.navigate('CosmeticScreen')}
           style={styles.cosmeticButton}>
