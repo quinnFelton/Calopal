@@ -2,7 +2,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { useEffect } from "react";
 import { Image } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
-import { type Goal } from "../db/schema";
+import { type Goal } from "./src/db/schema";
 import { GlobalProvider } from "./src/context/GlobalContext";
 import { useCosmetics } from "./src/hooks/cosmeticHook";
 import { useGoals } from "./src/hooks/goalHook";

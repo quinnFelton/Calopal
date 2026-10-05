@@ -57,7 +57,7 @@ export default function RootLayout() {
       >
         <DatabaseGate>
           <Stack>
-            <Stack.Screen name="index" options={{ title: 'Calopal Database' }} />
+            <Stack.Screen name="index" options={{ title: 'Calopal' }} />
           </Stack>
         </DatabaseGate>
       </SQLiteProvider>
