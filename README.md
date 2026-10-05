@@ -2,9 +2,14 @@
 
 <img src="assets/images/cat_icon_2.png" alt="Calopal app icon" width="110" />
 
-# Calopal
+<h1>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/images/logo-light.png" />
+    <img src="docs/images/logo-dark.png" alt="Calopal" width="300" />
+  </picture>
+</h1>
 
-**A nutrition tracker with a virtual pet that cares whether you hit your goals.**
+**A nutrition tracker that you care for.**
 
 Log your meals, set macro goals, and keep your pixel-art cat happy. When you meet your goals, your cat gets happier and you unlock decorations for its room. When you skip days, it notices.
 
@@ -16,13 +21,10 @@ Log your meals, set macro goals, and keep your pixel-art cat happy. When you mee
 
 <br />
 
-<img src="assets/images/Cat%20Assets/cat_sit_angry.png" alt="Angry cat" width="72" />
-<img src="assets/images/Cat%20Assets/cat_sit_sad.png" alt="Sad cat" width="72" />
-<img src="assets/images/Cat%20Assets/cat_sit_neutral.png" alt="Neutral cat" width="72" />
-<img src="assets/images/Cat%20Assets/cat_sit_happy.png" alt="Happy cat" width="72" />
-<img src="assets/images/Cat%20Assets/cat_sit_very_happy.png" alt="Very happy cat" width="72" />
-
-<sub>The cat's five moods, driven by how consistently you meet your goals.</sub>
+<img src="docs/images/home-decorated.png" alt="Home screen with a happy cat and unlocked decorations" width="200" />&nbsp;
+<img src="docs/images/goals.png" alt="Goals screen with weekly and daily reports" width="200" />&nbsp;
+<img src="docs/images/food-search.png" alt="USDA food search results" width="200" />&nbsp;
+<img src="docs/images/meals.png" alt="Meal list with macro totals" width="200" />
 
 </div>
 
@@ -33,12 +35,14 @@ Log your meals, set macro goals, and keep your pixel-art cat happy. When you mee
 - [Overview](#overview)
   - [My Role](#my-role)
 - [Features](#features)
+- [Screenshots](#screenshots)
 - [Product Management](#product-management)
   - [Problem & Vision](#problem--vision)
   - [Target Users](#target-users)
   - [User Stories & Acceptance Criteria](#user-stories--acceptance-criteria)
   - [Process: Scrum Over Four Sprints](#process-scrum-over-four-sprints)
   - [Sprint Outcomes](#sprint-outcomes)
+  - [Challenges](#challenges)
   - [Retrospective Takeaways](#retrospective-takeaways)
   - [Backlog & Roadmap](#backlog--roadmap)
 - [Technical Overview](#technical-overview)
@@ -80,6 +84,14 @@ I was the technical lead on a five-person team. My work included:
 
 ### How the pet's mood works
 
+<p align="center">
+<img src="assets/images/Cat%20Assets/cat_sit_angry.png" alt="Angry cat" width="72" />
+<img src="assets/images/Cat%20Assets/cat_sit_sad.png" alt="Sad cat" width="72" />
+<img src="assets/images/Cat%20Assets/cat_sit_neutral.png" alt="Neutral cat" width="72" />
+<img src="assets/images/Cat%20Assets/cat_sit_happy.png" alt="Happy cat" width="72" />
+<img src="assets/images/Cat%20Assets/cat_sit_very_happy.png" alt="Very happy cat" width="72" />
+</p>
+
 ```
 Happiness score  0–4    5–9    10–14     15–19    20+
 Mood             angry  sad    neutral   happy    very happy
@@ -89,6 +101,16 @@ Mood             angry  sad    neutral   happy    very happy
 - Completing **2 / 3 / 4** daily goals adds **+2 / +4 / +5** happiness.
 - Each day you don't open the app costs **−2** happiness, so the pet rewards consistency, not just occasional effort.
 
+## Screenshots
+
+| Onboarding | Home: happy & decorated | Home: neglected |
+|:---:|:---:|:---:|
+| <img src="docs/images/onboarding.png" alt="Onboarding screen" width="240" /> | <img src="docs/images/home-decorated.png" alt="Home screen with happy cat and decorations" width="240" /> | <img src="docs/images/home-sad.png" alt="Home screen with sad cat" width="240" /> |
+| **Goals & weekly report** | **Modify goals** | **Meals** |
+| <img src="docs/images/goals.png" alt="Goals screen" width="240" /> | <img src="docs/images/modify-goals.png" alt="Modify goals screen with min/max toggles" width="240" /> | <img src="docs/images/meals.png" alt="Meals screen" width="240" /> |
+| **Past eaten foods** | **USDA food search** | **Custom food entry** |
+| <img src="docs/images/past-foods.png" alt="Past eaten foods search" width="240" /> | <img src="docs/images/food-search.png" alt="USDA food search" width="240" /> | <img src="docs/images/add-food.png" alt="Manual food entry form" width="240" /> |
+
 ---
 
 ## Product Management
@@ -97,9 +119,16 @@ Mood             angry  sad    neutral   happy    very happy
 
 ### Problem & Vision
 
-Diet tracking has a well-known retention problem. Logging food is tedious, progress is slow, and nothing pushes back when you stop. Many people abandon calorie apps within a few weeks.
+Following a diet is hard enough on its own, and tracking it adds two more problems:
 
-**Our hypothesis:** a pet that reacts to your behavior gives you a reason to come back every day. Duolingo's owl and Tamagotchi-style games show that this kind of attachment works. The release plan set five high-level goals:
+- **Logging is boring.** Remembering to record every meal is monotonous, so people stop.
+- **Rewards are slow.** It takes weeks to see results from a plan, and motivation fizzles out long before then.
+
+Many people abandon calorie apps within a few weeks for exactly these reasons.
+
+**Our solution: gamify it.** Calopal creates *short-term* rewards and penalties around a pet you care about. Meet your goals and your pet's mood improves. Exceed them and you can spoil it with decorations. Miss days and it gets sad, then angry. That gives users a reason to open the app every day.
+
+Duolingo's owl and Tamagotchi-style games show that this kind of attachment drives daily engagement. The release plan set five high-level goals:
 
 1. Track caloric intake throughout a day.
 2. Let users set daily goals and see whether they were met.
@@ -178,6 +207,16 @@ Supporting stories delivered: **data persistence between sessions**, **personali
 
 **Scope decisions.** Choosing a pet species, petting interactions, an in-app currency shop and a goal-history screen were all planned at various points. As the deadline got closer, the Product Owner moved them to the backlog so the team could ship a polished core loop of **log food → hit goals → happy pet**.
 
+### Challenges
+
+| Area | Challenge |
+|---|---|
+| **Product** | Building good-looking graphics and pet animation with plain React Native, especially once the pet needed to react to touch |
+| **Product** | Letting users choose which unlocked cosmetic to display didn't make it into the release |
+| **Process** | Most of the team was new to React Native, Expo and Drizzle, so early sprints included a lot of learning |
+| **Process** | Effort estimates were too low, and task descriptions weren't always detailed enough for a teammate to pick up |
+| **Process** | Scheduling work around other classes, and communicating about new concepts and code |
+
 ### Retrospective Takeaways
 
 What the team learned across four sprint reviews:
@@ -187,10 +226,12 @@ What the team learned across four sprint reviews:
 - **Share the design before splitting the work.** Unshared design plans created hidden dependencies between tasks.
 - **Keep scrums short.** Early meetings ran long on big-picture discussion. Time-boxing them freed up time for the sprint's actual work.
 - **Co-locate for integration.** In-person group coding sessions in Sprint 4 sped up bug fixing and integration noticeably.
-- **Keep the file check-out channel.** It was cited in every retrospective as the reason merge conflicts stayed rare.
+- **Keep the file check-out channel.** It was cited in every retrospective as the reason merge conflicts stayed rare. Together with working on a single branch, it kept integration simple for a small codebase.
 
 ### Backlog & Roadmap
 
+- [ ] **Barcode scanning** for faster food entry
+- [ ] **Cosmetic selection:** choose which unlocked decorations appear in the room
 - [ ] **More pets:** dog, monkey and banana slug (concept art is in `assets/images/`)
 - [ ] **In-app currency** earned from goals and spent on room decorations
 - [ ] **Petting interaction:** touch reactions and animation
@@ -217,25 +258,22 @@ What the team learned across four sprint reviews:
 | Data | SQLite (`expo-sqlite`) with **Drizzle ORM** and versioned migrations |
 | External API | [USDA FoodData Central](https://fdc.nal.usda.gov/api-guide) |
 | Build | EAS Build (development / preview / production profiles) |
+| Collaboration | GitHub, Miro (scrum board), Discord |
 
 ### Architecture
 
-```
-┌────────────────────────── Screens (app/src/screens) ──────────────────────────┐
-│  Onboarding · Home · Goals · Meals · Add Meal · Food Search · Decorations     │
-└───────────────────────────────────┬───────────────────────────────────────────┘
-                                    │  call
-┌───────────────────────────── Hooks (app/src/hooks) ───────────────────────────┐
-│  useOnboarding · useGoals · useMeals · useFoods · useCosmetics                │
-│  Encapsulate all DB access so screens never write SQL.                        │
-└───────────────────────────────────┬───────────────────────────────────────────┘
-                                    │  Drizzle ORM
-┌─────────────────────────── SQLite (on-device) ────────────────────────────────┐
-│  user_details · goals · meals · meal_components · foods · cosmetics           │
-└───────────────────────────────────────────────────────────────────────────────┘
-```
+<p align="center"><img src="docs/images/architecture.png" alt="System diagram: React Native front end calls data hooks, which use Drizzle ORM over on-device SQLite; the front end also queries the USDA database API" width="720" /></p>
+
+- **Screens** (`app/src/screens`) render UI and never touch the database directly.
+- **Hooks** (`useOnboarding`, `useGoals`, `useMeals`, `useFoods`, `useCosmetics`) hold all data access and business logic.
+- **Drizzle ORM + SQLite** stores everything on the device in six tables: `user_details`, `goals`, `meals`, `meal_components`, `foods` and `cosmetics`.
+- **USDA FoodData Central** is the only network dependency, and it's used only for food search.
 
 Migrations in [`drizzle/`](drizzle) run automatically at startup. A `DatabaseGate` component keeps the app from rendering until the schema is up to date. Developer guides for the data hooks are in [`docs/hooks/`](docs/hooks).
+
+### Screen flow
+
+<p align="center"><img src="docs/images/screen-flow.png" alt="Screen flow: onboarding leads to home; home connects to cosmetics, goals and food screens; food screen leads to add meal, add food, past foods, manual input and USDA search" width="560" /></p>
 
 ### Project structure
 
